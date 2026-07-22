@@ -4,7 +4,7 @@
 
 KALEIDO turns a short brief — your industry, what you're building, the mood you want, and your platform — into a complete, coherent design system: a named style direction, a generated color palette, a type pairing, layout tokens, industry-specific UX guidance, a recommended stack, and a **live preview** you can export as design tokens.
 
-🔗 **Live:** https://sougatshekharhota.github.io/kaleido/
+🔗 **Live:** https://sougatshekhar97-cpu.github.io/kaleido/
 
 ## What it does
 
@@ -18,7 +18,7 @@ KALEIDO turns a short brief — your industry, what you're building, the mood yo
 
 ## How to use it
 
-1. Open the [live site](https://sougatshekharhota.github.io/kaleido/) (or run it locally — see below).
+1. Open the [live site](https://sougatshekhar97-cpu.github.io/kaleido/) (or run it locally — see below).
 2. **Pick your industry** — e.g. Fintech, Healthcare, Gaming, Luxury.
 3. **Choose what you're building** — landing page, dashboard, mobile app, marketplace, etc.
 4. **Select up to three moods** — Trustworthy, Bold, Elegant, Playful… (sensible defaults are pre-selected per industry).
@@ -38,7 +38,7 @@ KALEIDO turns a short brief — your industry, what you're building, the mood yo
 No build step and no dependencies — it's a single HTML file.
 
 ```bash
-git clone https://github.com/sougatshekharhota/kaleido.git
+git clone https://github.com/sougatshekhar97-cpu/kaleido.git
 cd kaleido
 python -m http.server 4177
 # then open http://localhost:4177
