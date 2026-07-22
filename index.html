@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KALEIDO ✲ Design System Generator</title>
+<meta name="description" content="Turn a one-line brief into a complete design system — style direction, color palette, type pairing, layout tokens, UX guidance and a live preview. For any industry, any product. By Sougat Shekhar Hota.">
+<meta property="og:title" content="KALEIDO — Design System Generator">
+<meta property="og:description" content="One brief in. A full design system out. Any industry, any product.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0d0b14; --bg2:#141021; --ink:#f4f1fb; --mut:rgba(244,241,251,.62); --faint:rgba(244,241,251,.40);
+    --line:rgba(244,241,251,.12); --card:#181327; --card2:#1f1832;
+    --a1:#7c5cff; --a2:#ff5ca8; --a3:#3ad0c8; --a4:#ffcb47;
+    --sans:'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    --disp:'Space Grotesk', var(--sans);
+    --r:16px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg); color:var(--ink); font-family:var(--sans); -webkit-font-smoothing:antialiased; overflow-x:hidden}
+  body::before{content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
+    background:
+      radial-gradient(60vw 60vw at 12% -10%, rgba(124,92,255,.22), transparent 60%),
+      radial-gradient(50vw 50vw at 100% 0%, rgba(255,92,168,.16), transparent 55%),
+      radial-gradient(60vw 60vw at 80% 110%, rgba(58,208,200,.14), transparent 60%);}
+  a{color:inherit}
+  .wrap{max-width:1180px; margin:0 auto; padding:0 clamp(16px,4vw,40px); position:relative; z-index:1}
+  .caps{font:600 11px/1 var(--sans); text-transform:uppercase; letter-spacing:.16em}
+
+  /* header */
+  header.site{position:sticky; top:0; z-index:30; background:rgba(13,11,20,.72); backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--line)}
+  header.site .wrap{display:flex; align-items:center; justify-content:space-between; padding:15px 0}
+  .brand{display:flex; align-items:center; gap:10px; text-decoration:none; font:700 16px/1 var(--disp); letter-spacing:.02em}
+  .brand .mk{width:26px; height:26px; display:inline-block; animation:spin 22s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .head-links{display:flex; gap:22px; align-items:center; font:500 13px/1 var(--sans)}
+  .head-links a{color:var(--mut); text-decoration:none; transition:color .25s}
+  .head-links a:hover{color:var(--ink)}
+
+  /* hero */
+  .hero{padding:clamp(46px,8vh,92px) 0 26px; text-align:center; position:relative}
+  .hero .kmark{width:104px; height:104px; margin:0 auto 22px; animation:spin 34s linear infinite}
+  .hero h1{font:600 clamp(38px,7vw,76px)/1.02 var(--disp); letter-spacing:-.02em; margin-bottom:18px}
+  .hero h1 .grad{background:linear-gradient(100deg,var(--a1),var(--a2) 40%,var(--a4) 75%,var(--a3));
+    -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent}
+  .hero p.lede{font:400 clamp(16px,2.1vw,20px)/1.55 var(--sans); color:var(--mut); max-width:58ch; margin:0 auto}
+  .hero .tags{display:flex; gap:8px; flex-wrap:wrap; justify-content:center; margin-top:22px}
+  .hero .tags span{font:500 12px/1 var(--sans); color:var(--mut); border:1px solid var(--line); border-radius:999px; padding:8px 14px}
+
+  /* builder */
+  .builder{background:linear-gradient(180deg,var(--card),rgba(24,19,39,.6)); border:1px solid var(--line);
+    border-radius:22px; padding:clamp(20px,3vw,32px); margin-top:34px; box-shadow:0 30px 80px -40px rgba(0,0,0,.8)}
+  .bgrid{display:grid; grid-template-columns:1fr 1fr; gap:22px 30px}
+  .field label{display:block; font:600 12px/1 var(--sans); letter-spacing:.04em; color:var(--faint);
+    text-transform:uppercase; margin-bottom:10px}
+  select, .chips button{font-family:var(--sans)}
+  select{width:100%; padding:14px 15px; border:1px solid var(--line); border-radius:12px; background:var(--bg2);
+    color:var(--ink); font-size:15px; outline:none; transition:border-color .25s, box-shadow .25s; appearance:none;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23c9c2e4' stroke-width='2'><path d='M6 9l6 6 6-6'/></svg>");
+    background-repeat:no-repeat; background-position:right 14px center}
+  select:focus{border-color:var(--a1); box-shadow:0 0 0 3px rgba(124,92,255,.25)}
+  .chips{display:flex; gap:8px; flex-wrap:wrap}
+  .chips button{cursor:pointer; background:var(--bg2); border:1px solid var(--line); border-radius:999px;
+    padding:9px 14px; font:500 13px/1 var(--sans); color:var(--mut); transition:all .2s}
+  .chips button:hover{color:var(--ink); border-color:var(--faint)}
+  .chips button.on{background:var(--ink); color:var(--bg); border-color:var(--ink); font-weight:600}
+  .actions{display:flex; gap:12px; flex-wrap:wrap; align-items:center; margin-top:26px}
+  .btn{border:0; cursor:pointer; border-radius:12px; padding:15px 26px; font:600 14px/1 var(--sans); transition:transform .15s, filter .2s, background .2s}
+  .btn:active{transform:translateY(1px)}
+  .btn.primary{background:linear-gradient(100deg,var(--a1),var(--a2)); color:#fff; box-shadow:0 12px 30px -12px rgba(124,92,255,.7)}
+  .btn.primary:hover{filter:brightness(1.08)}
+  .btn.ghost{background:var(--bg2); color:var(--ink); border:1px solid var(--line)}
+  .btn.ghost:hover{border-color:var(--faint)}
+  .hint{color:var(--faint); font-size:13px}
+
+  /* results */
+  #out{display:none; margin-top:40px; padding-bottom:80px}
+  #out.on{display:block; animation:rise .5s ease both}
+  @keyframes rise{from{opacity:0; transform:translateY(18px)} to{opacity:1; transform:none}}
+  .sysbar{display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; margin-bottom:24px}
+  .sysbar h2{font:600 clamp(22px,3vw,30px)/1.1 var(--disp)}
+  .sysbar .brief{color:var(--mut); font-size:14px; margin-top:4px}
+  .sysbar .sb-actions{display:flex; gap:10px; flex-wrap:wrap}
+
+  .cols{display:grid; grid-template-columns:1.05fr .95fr; gap:22px; align-items:start}
+  .panel{background:var(--card); border:1px solid var(--line); border-radius:var(--r); padding:22px 24px; margin-bottom:22px}
+  .panel h3{font:600 15px/1 var(--disp); margin-bottom:4px}
+  .panel .sub{color:var(--faint); font-size:12.5px; margin-bottom:16px}
+  .stylehead{display:flex; align-items:baseline; gap:12px; flex-wrap:wrap}
+  .stylehead .name{font:600 24px/1.1 var(--disp)}
+  .stylehead .badge{font:600 11px/1 var(--sans); text-transform:uppercase; letter-spacing:.08em; color:var(--a3);
+    border:1px solid rgba(58,208,200,.35); border-radius:999px; padding:6px 11px}
+  .rationale{color:var(--mut); font-size:14.5px; line-height:1.6; margin-top:12px}
+
+  /* palette */
+  .swatches{display:grid; grid-template-columns:repeat(6,1fr); gap:8px}
+  .sw{border-radius:12px; height:74px; border:1px solid var(--line); position:relative; cursor:pointer; overflow:hidden;
+    display:flex; align-items:flex-end; padding:8px; transition:transform .15s}
+  .sw:hover{transform:translateY(-3px)}
+  .sw .hex{font:600 10.5px/1.3 var(--sans); background:rgba(0,0,0,.34); color:#fff; padding:3px 6px; border-radius:6px; backdrop-filter:blur(3px)}
+  .sw .role{position:absolute; top:8px; left:8px; font:600 9px/1 var(--sans); text-transform:uppercase; letter-spacing:.06em; opacity:.85}
+  @media (max-width:520px){ .swatches{grid-template-columns:repeat(3,1fr)} }
+
+  .type-demo .th{font-size:30px; line-height:1.1; margin-bottom:6px}
+  .type-demo .tb{font-size:14.5px; line-height:1.6; color:var(--mut)}
+  .type-meta{display:flex; gap:18px; flex-wrap:wrap; margin-top:14px; font-size:13px; color:var(--mut)}
+  .type-meta b{color:var(--ink); font-weight:600}
+
+  .tokens{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+  .tok{background:var(--bg2); border:1px solid var(--line); border-radius:10px; padding:11px 13px; font-size:13px}
+  .tok .k{color:var(--faint); font-size:11px; text-transform:uppercase; letter-spacing:.05em}
+  .tok .v{font-weight:600; margin-top:3px; font-family:var(--disp)}
+
+  .uxlist{list-style:none; display:flex; flex-direction:column; gap:11px}
+  .uxlist li{display:flex; gap:11px; align-items:flex-start; font-size:14px; line-height:1.5}
+  .uxlist .ic{flex:0 0 auto; width:20px; height:20px; border-radius:6px; display:grid; place-items:center; font-size:12px; font-weight:700; margin-top:1px}
+  .uxlist .do .ic{background:rgba(58,208,200,.16); color:var(--a3)}
+  .uxlist .no .ic{background:rgba(255,92,168,.16); color:var(--a2)}
+
+  .pills{display:flex; gap:8px; flex-wrap:wrap}
+  .pill{font:500 13px/1 var(--sans); color:var(--ink); background:var(--bg2); border:1px solid var(--line);
+    border-radius:999px; padding:9px 14px}
+
+  /* live preview */
+  .preview-shell{position:sticky; top:82px}
+  .previewhead{display:flex; align-items:center; justify-content:space-between; margin-bottom:12px}
+  .previewhead .caps{color:var(--faint)}
+  .previewhead .devs button{cursor:pointer; background:var(--bg2); border:1px solid var(--line); color:var(--mut);
+    border-radius:8px; padding:6px 10px; font:600 11px/1 var(--sans); margin-left:6px}
+  .previewhead .devs button.on{background:var(--ink); color:var(--bg); border-color:var(--ink)}
+  #stage{border:1px solid var(--line); border-radius:18px; overflow:hidden; background:#000; transition:max-width .3s; margin:0 auto}
+
+  /* the rendered preview uses inline-scoped vars (--p-*) set at runtime */
+  .ui{ --p-radius:14px; padding:0; font-family:var(--p-body); color:var(--p-ink); background:var(--p-bg) }
+  .ui .nav{display:flex; align-items:center; justify-content:space-between; padding:16px 20px; border-bottom:1px solid var(--p-line)}
+  .ui .nav .lg{display:flex; align-items:center; gap:9px; font-family:var(--p-head); font-weight:700; font-size:16px}
+  .ui .nav .dot{width:18px; height:18px; border-radius:6px; background:var(--p-primary)}
+  .ui .nav .links{display:flex; gap:16px; font-size:12.5px; color:var(--p-mut)}
+  .ui .nav .links .cta{background:var(--p-primary); color:var(--p-onprimary); padding:7px 13px; border-radius:calc(var(--p-radius) * .6); font-weight:600}
+  .ui .hero2{padding:30px 22px 24px}
+  .ui .hero2 .eyebrow{display:inline-block; font-size:11px; font-weight:600; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--p-accent); background:var(--p-accentSoft); padding:6px 11px; border-radius:999px; margin-bottom:14px}
+  .ui .hero2 h4{font-family:var(--p-head); font-weight:700; font-size:30px; line-height:1.08; letter-spacing:-.01em; margin-bottom:10px; max-width:16ch}
+  .ui .hero2 p{font-size:14px; line-height:1.55; color:var(--p-mut); max-width:40ch; margin-bottom:18px}
+  .ui .hero2 .row{display:flex; gap:10px; flex-wrap:wrap}
+  .ui .btnp{background:var(--p-primary); color:var(--p-onprimary); border:0; padding:11px 18px; border-radius:calc(var(--p-radius) * .7); font-weight:600; font-size:13.5px; box-shadow:var(--p-shadow)}
+  .ui .btns{background:transparent; color:var(--p-ink); border:1px solid var(--p-line); padding:11px 18px; border-radius:calc(var(--p-radius) * .7); font-weight:600; font-size:13.5px}
+  .ui .grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; padding:6px 22px 20px}
+  .ui .stat{background:var(--p-surface); border:1px solid var(--p-line); border-radius:var(--p-radius); padding:15px; box-shadow:var(--p-shadow)}
+  .ui .stat .n{font-family:var(--p-head); font-weight:700; font-size:23px; color:var(--p-primary)}
+  .ui .stat .l{font-size:11px; color:var(--p-mut); margin-top:4px}
+  .ui .cardrow{padding:4px 22px 26px}
+  .ui .bigcard{background:var(--p-surface); border:1px solid var(--p-line); border-radius:var(--p-radius); padding:18px; box-shadow:var(--p-shadow)}
+  .ui .bigcard .ct{font-family:var(--p-head); font-weight:600; font-size:15px; margin-bottom:12px}
+  .ui .bars{display:flex; align-items:flex-end; gap:8px; height:84px}
+  .ui .bars .bar{flex:1; border-radius:6px 6px 0 0; background:linear-gradient(180deg,var(--p-primary),var(--p-accent))}
+  .ui .chips2{display:flex; gap:7px; flex-wrap:wrap; margin-top:14px}
+  .ui .chips2 span{font-size:11px; color:var(--p-mut); border:1px solid var(--p-line); border-radius:999px; padding:5px 10px}
+
+  .exportbar{display:flex; gap:10px; flex-wrap:wrap; margin-top:8px}
+
+  footer{border-top:1px solid var(--line); padding:32px 0 60px; color:var(--mut); font-size:13px; margin-top:20px}
+  footer .wrap{display:flex; justify-content:space-between; gap:14px; flex-wrap:wrap; align-items:baseline}
+  footer a{color:var(--a1); text-decoration:none}
+  footer .disc{max-width:56ch; color:var(--faint)}
+
+  .toast{position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(30px); background:var(--ink); color:var(--bg);
+    padding:12px 20px; border-radius:12px; font:600 13px/1 var(--sans); opacity:0; pointer-events:none; transition:all .3s; z-index:60}
+  .toast.on{opacity:1; transform:translateX(-50%) translateY(0)}
+
+  @media (max-width:900px){ .cols{grid-template-columns:1fr} .preview-shell{position:static} .bgrid{grid-template-columns:1fr} }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <a class="brand" href="#top">
+      <svg class="mk" viewBox="0 0 100 100" aria-hidden="true"><g><path d="M50 8 L62 38 L92 50 L62 62 L50 92 L38 62 L8 50 L38 38 Z" fill="url(#g1)"/></g>
+      <defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7c5cff"/><stop offset=".5" stop-color="#ff5ca8"/><stop offset="1" stop-color="#3ad0c8"/></linearGradient></defs></svg>
+      KALEIDO
+    </a>
+    <div class="head-links">
+      <a href="#top">Generator</a>
+      <a href="https://github.com/sougatshekharhota" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://sougatshekharhota.github.io/portfolio/">← Portfolio</a>
+    </div>
+  </div>
+</header>
+
+<main class="wrap" id="top">
+  <section class="hero">
+    <svg class="kmark" viewBox="0 0 100 100" aria-hidden="true">
+      <g>
+        <path d="M50 6 L60 40 L94 50 L60 60 L50 94 L40 60 L6 50 L40 40 Z" fill="url(#hg)"/>
+        <circle cx="50" cy="50" r="12" fill="none" stroke="url(#hg)" stroke-width="3"/>
+      </g>
+      <defs><linearGradient id="hg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7c5cff"/><stop offset=".4" stop-color="#ff5ca8"/><stop offset=".75" stop-color="#ffcb47"/><stop offset="1" stop-color="#3ad0c8"/></linearGradient></defs>
+    </svg>
+    <h1>One brief in.<br>A <span class="grad">whole design system</span> out.</h1>
+    <p class="lede">Tell KALEIDO your industry, product and the mood you're after. It refracts that into a complete, coherent system — style direction, color palette, type pairing, layout tokens, UX guidance and a live preview you can export.</p>
+    <div class="tags"><span>🎨 Any industry</span><span>⚡ Instant</span><span>🔒 Runs in your browser</span><span>📦 Export tokens</span></div>
+  </section>
+
+  <section class="builder" id="builder">
+    <div class="bgrid">
+      <div class="field">
+        <label for="f-industry">Industry</label>
+        <select id="f-industry"></select>
+      </div>
+      <div class="field">
+        <label for="f-product">What are you building?</label>
+        <select id="f-product"></select>
+      </div>
+      <div class="field" style="grid-column:1 / -1">
+        <label>Mood — pick up to three</label>
+        <div class="chips" id="f-moods"></div>
+      </div>
+      <div class="field">
+        <label for="f-platform">Platform</label>
+        <select id="f-platform"></select>
+      </div>
+      <div class="field">
+        <label for="f-contrast">Appearance</label>
+        <select id="f-contrast">
+          <option value="auto">Auto (let KALEIDO decide)</option>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </div>
+    </div>
+    <div class="actions">
+      <button class="btn primary" id="go">✲ Generate my design system</button>
+      <button class="btn ghost" id="surprise">🎲 Surprise me</button>
+      <span class="hint" id="hint">Pick an industry and mood, then generate.</span>
+    </div>
+  </section>
+
+  <section id="out">
+    <div class="sysbar">
+      <div>
+        <h2 id="sys-title"></h2>
+        <div class="brief" id="sys-brief"></div>
+      </div>
+      <div class="sb-actions">
+        <button class="btn ghost" id="regen">↻ Another take</button>
+      </div>
+    </div>
+
+    <div class="cols">
+      <div class="left">
+        <div class="panel">
+          <div class="stylehead">
+            <span class="name" id="style-name"></span>
+            <span class="badge" id="style-badge"></span>
+          </div>
+          <div class="rationale" id="style-why"></div>
+        </div>
+
+        <div class="panel">
+          <h3>Color palette</h3>
+          <div class="sub">Click any swatch to copy its hex. Generated to be harmonious and accessible.</div>
+          <div class="swatches" id="swatches"></div>
+        </div>
+
+        <div class="panel">
+          <h3>Typography</h3>
+          <div class="sub" id="type-sub"></div>
+          <div class="type-demo">
+            <div class="th" id="type-h">The quick brown fox</div>
+            <div class="tb" id="type-b">Jumps over the lazy dog. Good typography sets rhythm, hierarchy and tone before a single word is read.</div>
+          </div>
+          <div class="type-meta" id="type-meta"></div>
+        </div>
+
+        <div class="panel">
+          <h3>Layout &amp; tokens</h3>
+          <div class="sub">The structural DNA — spacing, shape and depth.</div>
+          <div class="tokens" id="tokens"></div>
+        </div>
+
+        <div class="panel">
+          <h3>UX guidance for <span id="ux-ind"></span></h3>
+          <div class="sub">Do these; avoid those. Tuned to how this audience actually behaves.</div>
+          <ul class="uxlist" id="uxlist"></ul>
+        </div>
+
+        <div class="panel">
+          <h3>Recommended stack &amp; components</h3>
+          <div class="sub">A sensible starting point for this platform and product.</div>
+          <div class="pills" id="stack" style="margin-bottom:14px"></div>
+          <div class="pills" id="components"></div>
+        </div>
+      </div>
+
+      <div class="right">
+        <div class="preview-shell">
+          <div class="previewhead">
+            <span class="caps">Live preview</span>
+            <div class="devs">
+              <button data-w="100%" class="on">Desktop</button>
+              <button data-w="390px">Mobile</button>
+            </div>
+          </div>
+          <div id="stage"></div>
+          <div class="panel" style="margin-top:22px">
+            <h3>Export</h3>
+            <div class="sub">Take the system into your codebase.</div>
+            <div class="exportbar">
+              <button class="btn ghost" id="ex-json">⤓ Tokens JSON</button>
+              <button class="btn ghost" id="ex-css">⤓ CSS variables</button>
+              <button class="btn ghost" id="ex-tw">⤓ Tailwind theme</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>KALEIDO — a design-system generator. Original engine &amp; data, no external calls.</span>
+    <span class="disc">Recommendations are a strong starting point, not a substitute for design judgement. Built by <a href="https://sougatshekharhota.github.io/portfolio/">Sougat Shekhar Hota</a>.</span>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+'use strict';
+const $ = s => document.querySelector(s);
+
+/* ============================================================
+   KALEIDO engine — original data + generation logic
+   ============================================================ */
+
+/* ---- master style catalog (visual DNA + affinity tags) ---- */
+const STYLES = [
+  {id:'refined-minimal', name:'Refined Minimal', badge:'Clarity', tags:['minimal','trust','calm','corporate','saas','professional'],
+    radius:12, density:'airy', shadow:'soft', contrast:'light', sat:'muted', bodyBias:['sans-neutral'], why:'Restraint reads as competence. Generous whitespace and quiet shadows keep the focus on content and let the product feel effortless.'},
+  {id:'editorial-serif', name:'Editorial Serif', badge:'Considered', tags:['editorial','elegant','media','luxury','calm','premium'],
+    radius:6, density:'airy', shadow:'subtle', contrast:'light', sat:'muted', bodyBias:['serif-read','sans-neutral'], why:'A serif headline signals authority and craft. Pairs a print sensibility with modern spacing for a voice that feels edited, not assembled.'},
+  {id:'neo-brutalist', name:'Neo-Brutalist', badge:'Bold', tags:['bold','creative','expressive','agency','energetic'],
+    radius:2, density:'compact', shadow:'hard', contrast:'light', sat:'vivid', bodyBias:['sans-geo'], why:'Hard edges, flat blocks and unapologetic color. It grabs attention and reads as confident and independent — great when standing out matters more than blending in.'},
+  {id:'glass-depth', name:'Glass & Depth', badge:'Modern', tags:['modern','tech','premium','saas','energetic'],
+    radius:18, density:'airy', shadow:'glow', contrast:'dark', sat:'vivid', bodyBias:['sans-geo','sans-neutral'], why:'Layered translucency and glow suggest speed and sophistication. A dark canvas makes color and data pop, which suits modern software.'},
+  {id:'warm-organic', name:'Warm Organic', badge:'Human', tags:['organic','friendly','wellness','food','calm','warm'],
+    radius:22, density:'airy', shadow:'soft', contrast:'light', sat:'warm', bodyBias:['sans-round','serif-read'], why:'Soft radii and warm neutrals feel approachable and safe. It lowers the guard — ideal when the goal is comfort, care and belonging.'},
+  {id:'technical-mono', name:'Technical Mono', badge:'Precise', tags:['technical','developer','data','minimal'],
+    radius:5, density:'compact', shadow:'hairline', contrast:'dark', sat:'muted', bodyBias:['mono','sans-neutral'], why:'Monospace and a tight grid say engineering-grade. Precise, legible and honest — the aesthetic of tools built by people who ship.'},
+  {id:'luxe-dark', name:'Luxe Dark', badge:'Premium', tags:['luxury','premium','elegant','dark'],
+    radius:8, density:'airy', shadow:'glow', contrast:'dark', sat:'muted', bodyBias:['serif-read','sans-neutral'], why:'Deep backgrounds with a single precious accent read as exclusive and high-value. Space and stillness do the selling.'},
+  {id:'playful-pop', name:'Playful Pop', badge:'Joyful', tags:['playful','friendly','consumer','kids','energetic'],
+    radius:20, density:'airy', shadow:'colored', contrast:'light', sat:'vivid', bodyBias:['sans-round','sans-geo'], why:'Bouncy radii and bright, happy color invite play. It signals low-stakes fun — perfect when delight drives adoption.'},
+  {id:'bold-geometric', name:'Bold Geometric', badge:'Confident', tags:['bold','modern','sports','saas','energetic'],
+    radius:10, density:'compact', shadow:'medium', contrast:'light', sat:'vivid', bodyBias:['sans-geo'], why:'Strong type, decisive color and a firm grid project momentum and performance. Reads as ambitious and in control.'},
+  {id:'corporate-trust', name:'Corporate Trust', badge:'Assured', tags:['trust','corporate','finance','legal','enterprise','professional'],
+    radius:8, density:'airy', shadow:'subtle', contrast:'light', sat:'muted', bodyBias:['sans-neutral','serif-read'], why:'Blue-leaning, structured and understated. Every choice reduces perceived risk — exactly what regulated, high-consideration audiences reward.'}
+];
+
+/* ---- font pairings (real Google Fonts) with category tags ---- */
+const FONTS = [
+  {id:'grotesk-inter', head:'Space Grotesk', body:'Inter', cats:['sans-geo','sans-neutral'], hw:'400;500;600;700', bw:'400;500;600', note:'Geometric display over a neutral workhorse — modern and highly legible.'},
+  {id:'sora-inter', head:'Sora', body:'Inter', cats:['sans-geo','sans-neutral'], hw:'400;600;700', bw:'400;500;600', note:'Friendly-technical; a startup staple that stays warm.'},
+  {id:'fraunces-inter', head:'Fraunces', body:'Inter', cats:['serif-read','sans-neutral'], hw:'400;500;600', bw:'400;500', note:'Soft, characterful serif with a clean sans — editorial but warm.'},
+  {id:'playfair-source', head:'Playfair Display', body:'Source Sans 3', cats:['serif-read'], hw:'500;600;700', bw:'400;600', note:'High-contrast serif for a luxury, magazine feel.'},
+  {id:'dmserif-dmsans', head:'DM Serif Display', body:'DM Sans', cats:['serif-read','sans-neutral'], hw:'400', bw:'400;500;600', note:'Elegant serif display, quietly modern body.'},
+  {id:'poppins-inter', head:'Poppins', body:'Inter', cats:['sans-round','sans-geo'], hw:'500;600;700', bw:'400;500', note:'Rounded and approachable — consumer-friendly.'},
+  {id:'plexmono-plexsans', head:'IBM Plex Mono', body:'IBM Plex Sans', cats:['mono','sans-neutral'], hw:'500;600', bw:'400;500', note:'Engineering-grade monospace display, sturdy sans body.'},
+  {id:'manrope', head:'Manrope', body:'Manrope', cats:['sans-neutral','sans-geo'], hw:'600;700', bw:'400;500', note:'One clean superfamily — minimal and calm.'},
+  {id:'libre-lora', head:'Libre Franklin', body:'Lora', cats:['sans-neutral','serif-read'], hw:'600;700', bw:'400;500', note:'Trustworthy grotesque headline over a readable serif — classic and credible.'},
+  {id:'bricolage-inter', head:'Bricolage Grotesque', body:'Inter', cats:['sans-geo','sans-neutral'], hw:'500;600;700', bw:'400;500', note:'Expressive contemporary display with quirk — creative and current.'},
+  {id:'cormorant-nunito', head:'Cormorant Garamond', body:'Nunito Sans', cats:['serif-read','sans-round'], hw:'500;600', bw:'400;600', note:'Refined thin serif with a soft sans — understated luxury.'},
+  {id:'outfit-inter', head:'Outfit', body:'Inter', cats:['sans-geo','sans-neutral'], hw:'500;600;700', bw:'400;500', note:'Crisp geometric display, neutral body — modern SaaS default.'},
+  {id:'syne-inter', head:'Syne', body:'Inter', cats:['sans-geo'], hw:'600;700;800', bw:'400;500', note:'Arty, offbeat display — for studios and statement brands.'},
+  {id:'spectral-inter', head:'Spectral', body:'Inter', cats:['serif-read','sans-neutral'], hw:'500;600', bw:'400;500', note:'Screen-first serif built for reading — media and long-form.'},
+  {id:'archivo-inter', head:'Archivo', body:'Inter', cats:['sans-geo'], hw:'600;700', bw:'400;500', note:'Grotesque with attitude — sporty and industrial.'}
+];
+
+/* ---- mood chips: each nudges hue, saturation, contrast and style tags ---- */
+const MOODS = {
+  Trustworthy:{tags:['trust','corporate','professional'], hue:218, sat:-6, harmony:'analogous'},
+  Bold:{tags:['bold','energetic'], hue:null, sat:12, harmony:'complementary'},
+  Elegant:{tags:['elegant','premium','luxury'], hue:270, sat:-8, harmony:'analogous'},
+  Friendly:{tags:['friendly','warm'], hue:24, sat:6, harmony:'analogous'},
+  Technical:{tags:['technical','developer'], hue:200, sat:-4, harmony:'analogous'},
+  Luxurious:{tags:['luxury','premium','elegant'], hue:44, sat:-2, harmony:'split'},
+  Energetic:{tags:['energetic','bold','playful'], hue:8, sat:16, harmony:'triadic'},
+  Calm:{tags:['calm','minimal'], hue:170, sat:-10, harmony:'analogous'},
+  Playful:{tags:['playful','friendly','energetic'], hue:330, sat:14, harmony:'triadic'},
+  Minimal:{tags:['minimal','calm','professional'], hue:null, sat:-14, harmony:'monochrome'}
+};
+
+/* ---- industries: base identity + UX guidance + sample copy ---- */
+const INDUSTRIES = [
+  {id:'fintech', name:'Fintech & Banking', emoji:'🏦', hue:214, tags:['trust','corporate','professional','finance'], defaultMoods:['Trustworthy','Minimal'], contrast:'light',
+    ux:[['Show security and compliance signals early — balances, encryption, regulator badges','do'],['Make numbers scannable with tabular figures and clear deltas','do'],['Confirm irreversible money actions with an explicit review step','do'],['Never use dark patterns or hide fees — trust is the product','no'],['Avoid playful ambiguity on anything involving money','no']],
+    sample:{brand:'Ledgerly', headline:'Money that finally makes sense', sub:'Track, move and grow your balance with clarity built for real decisions.', cta:'Open account', chips:['Balances','Transfers','Insights']}},
+  {id:'health', name:'Healthcare & Wellness', emoji:'🩺', hue:168, tags:['trust','calm','wellness','professional'], defaultMoods:['Calm','Trustworthy'], contrast:'light',
+    ux:[['Default to large, high-contrast text — many users have low vision or stress','do'],['Reduce cognitive load: one primary action per screen','do'],['Use calm, reassuring color; reserve red strictly for genuine alerts','do'],['Never gamify clinical decisions or bury consent','no'],['Avoid jargon without plain-language explanations','no']],
+    sample:{brand:'Calla Health', headline:'Care that meets you where you are', sub:'Book, track and understand your health in language that actually helps.', cta:'Find care', chips:['Appointments','Records','Reminders']}},
+  {id:'saas', name:'SaaS & Productivity', emoji:'⚡', hue:255, tags:['saas','modern','professional','minimal'], defaultMoods:['Minimal','Technical'], contrast:'auto',
+    ux:[['Get users to first value fast — a guided empty state beats a blank canvas','do'],['Keep primary navigation stable and predictable','do'],['Surface keyboard shortcuts and bulk actions for power users','do'],['Avoid feature-dumping the onboarding','no'],['Don’t hide destructive actions next to common ones','no']],
+    sample:{brand:'Flowdesk', headline:'Ship work, not busywork', sub:'One workspace for tasks, docs and automation — so your team moves as one.', cta:'Start free', chips:['Tasks','Docs','Automation']}},
+  {id:'ecommerce', name:'E-commerce & Retail', emoji:'🛍️', hue:348, tags:['consumer','friendly','energetic','bold'], defaultMoods:['Bold','Friendly'], contrast:'light',
+    ux:[['Make the product the hero — big imagery, obvious price and add-to-cart','do'],['Show trust cues near checkout: returns, reviews, secure payment','do'],['Keep the cart and checkout ruthlessly short','do'],['Never surprise users with fees at the final step','no'],['Avoid clutter that competes with the buy button','no']],
+    sample:{brand:'Marlo', headline:'Everyday pieces, elevated', sub:'Considered essentials, made to last and priced to make sense.', cta:'Shop new in', chips:['New in','Bestsellers','Sale']}},
+  {id:'education', name:'Education & E-learning', emoji:'🎓', hue:28, tags:['friendly','calm','professional','warm'], defaultMoods:['Friendly','Calm'], contrast:'light',
+    ux:[['Show progress visibly — bars, streaks and clear next steps motivate','do'],['Chunk content; one concept per view with room to breathe','do'],['Celebrate small wins to sustain momentum','do'],['Avoid overwhelming learners with everything at once','no'],['Don’t punish mistakes harshly — encourage retry','no']],
+    sample:{brand:'Lumen Learn', headline:'Learn it. Keep it.', sub:'Short lessons, real practice and progress you can actually feel.', cta:'Start learning', chips:['Courses','Practice','Progress']}},
+  {id:'realestate', name:'Real Estate & Property', emoji:'🏠', hue:150, tags:['trust','premium','professional','calm'], defaultMoods:['Trustworthy','Elegant'], contrast:'light',
+    ux:[['Lead with large, beautiful photography and clear key facts','do'],['Make search filters powerful but forgiving','do'],['Provide map + list views and easy saving/comparison','do'],['Avoid burying price, location or size','no'],['Don’t make contacting an agent feel like a trap','no']],
+    sample:{brand:'Northward', headline:'Find the place that fits', sub:'Homes worth seeing, with the numbers that actually matter up front.', cta:'Browse homes', chips:['Buy','Rent','Saved']}},
+  {id:'food', name:'Food & Hospitality', emoji:'🍽️', hue:14, tags:['warm','friendly','consumer','organic'], defaultMoods:['Friendly','Energetic'], contrast:'light',
+    ux:[['Let appetite-driving imagery lead — food sells itself','do'],['Make ordering or booking a two-tap affair','do'],['Show wait times, availability and location clearly','do'],['Avoid tiny menus and hidden dietary info','no'],['Don’t make reservations feel bureaucratic','no']],
+    sample:{brand:'Saffron & Oak', headline:'A table worth coming back to', sub:'Seasonal plates, warm rooms and a booking that takes ten seconds.', cta:'Reserve a table', chips:['Menu','Book','Locations']}},
+  {id:'fitness', name:'Fitness & Sports', emoji:'💪', hue:96, tags:['bold','energetic','sports','friendly'], defaultMoods:['Energetic','Bold'], contrast:'dark',
+    ux:[['Motivate with bold numbers, streaks and personal records','do'],['Make logging a workout effortless and fast','do'],['Use energetic color and strong type to drive intensity','do'],['Avoid shame-based framing around missed goals','no'],['Don’t clutter the during-workout view','no']],
+    sample:{brand:'Vault', headline:'Show up. Level up.', sub:'Train smarter with plans that adapt to you and stats that keep you honest.', cta:'Start training', chips:['Plans','Log','Records']}},
+  {id:'legal', name:'Legal & Professional', emoji:'⚖️', hue:222, tags:['trust','corporate','professional','legal'], defaultMoods:['Trustworthy','Elegant'], contrast:'light',
+    ux:[['Project authority through structure, restraint and precise language','do'],['Make documents and status easy to find and track','do'],['Use conservative color and impeccable typography','do'],['Avoid trendy flourishes that undercut credibility','no'],['Don’t obscure fees, terms or timelines','no']],
+    sample:{brand:'Marrow & Vale', headline:'Counsel you can rely on', sub:'Clear advice, transparent process and a team that answers.', cta:'Request a consult', chips:['Practice','Team','Contact']}},
+  {id:'agency', name:'Creative Agency & Studio', emoji:'🎨', hue:286, tags:['creative','bold','expressive','agency'], defaultMoods:['Bold','Playful'], contrast:'dark',
+    ux:[['Let the work dominate — big, immersive case studies','do'],['Take a visual risk; a memorable identity is the pitch','do'],['Keep navigation simple so the portfolio shines','do'],['Avoid generic templates that hide your point of view','no'],['Don’t sacrifice load speed for heavy effects','no']],
+    sample:{brand:'Nine & Co', headline:'We make brands impossible to ignore', sub:'Strategy, identity and motion for companies with something to say.', cta:'See the work', chips:['Work','Studio','Contact']}},
+  {id:'gaming', name:'Gaming & Entertainment', emoji:'🎮', hue:265, tags:['bold','energetic','expressive','modern'], defaultMoods:['Energetic','Bold'], contrast:'dark',
+    ux:[['Go immersive and cinematic — dark canvas, vivid accents, motion','do'],['Make the play/join action unmissable','do'],['Surface community, live status and rewards','do'],['Avoid heavy chrome that breaks immersion','no'],['Don’t let flashiness hurt readability of key info','no']],
+    sample:{brand:'Nova Arena', headline:'Drop in. Own the board.', sub:'Fast matches, real ranks and a community that never sleeps.', cta:'Play now', chips:['Play','Ranks','Store']}},
+  {id:'travel', name:'Travel & Hospitality', emoji:'✈️', hue:190, tags:['friendly','premium','consumer','calm'], defaultMoods:['Friendly','Elegant'], contrast:'light',
+    ux:[['Sell the feeling with immersive place photography','do'],['Make dates, price and availability instantly clear','do'],['Keep multi-step booking reassuring with a visible progress trail','do'],['Avoid hidden costs and confusing fare rules','no'],['Don’t bury cancellation and change policies','no']],
+    sample:{brand:'Wayfarer', headline:'Go somewhere that stays with you', sub:'Handpicked stays and trips, booked without the usual friction.', cta:'Explore trips', chips:['Stays','Flights','Trips']}},
+  {id:'nonprofit', name:'Nonprofit & Social Impact', emoji:'🤝', hue:158, tags:['trust','warm','friendly','professional'], defaultMoods:['Trustworthy','Friendly'], contrast:'light',
+    ux:[['Lead with human stories and concrete impact numbers','do'],['Make donating fast, transparent and low-pressure','do'],['Show exactly where money goes','do'],['Avoid guilt-heavy manipulation','no'],['Don’t hide how the organisation is run','no']],
+    sample:{brand:'Rootwork', headline:'Small acts, real change', sub:'See the impact, back a cause and watch your contribution do its work.', cta:'Donate', chips:['Causes','Impact','Volunteer']}},
+  {id:'enterprise', name:'Enterprise & B2B', emoji:'🏢', hue:232, tags:['corporate','trust','professional','enterprise'], defaultMoods:['Trustworthy','Minimal'], contrast:'light',
+    ux:[['Speak to outcomes and ROI, backed by proof and logos','do'],['Design dense data views that stay scannable','do'],['Support roles, permissions and audit trails visibly','do'],['Avoid consumer-cutesy tone with serious buyers','no'],['Don’t hide pricing behind endless forms if you can help it','no']],
+    sample:{brand:'Corebridge', headline:'The platform your whole org can trust', sub:'Unify operations, data and governance without slowing anyone down.', cta:'Book a demo', chips:['Platform','Security','Pricing']}},
+  {id:'kids', name:'Kids & Family', emoji:'🧸', hue:200, tags:['playful','friendly','consumer','warm'], defaultMoods:['Playful','Friendly'], contrast:'light',
+    ux:[['Use big touch targets, rounded shapes and cheerful color','do'],['Keep flows simple enough for little hands and busy parents','do'],['Add safe, delightful micro-rewards','do'],['Avoid dense text and small tap areas','no'],['Never place ads or purchases where a child can trigger them','no']],
+    sample:{brand:'Pip & Pod', headline:'Where little days feel big', sub:'Playful learning and safe fun the whole family can trust.', cta:'Get started', chips:['Play','Learn','Family']}},
+  {id:'luxury', name:'Luxury & Fashion', emoji:'💎', hue:38, tags:['luxury','premium','elegant','editorial'], defaultMoods:['Luxurious','Elegant'], contrast:'dark',
+    ux:[['Let space, stillness and one precise accent do the selling','do'],['Use large, art-directed imagery and impeccable type','do'],['Keep interactions slow, smooth and intentional','do'],['Avoid loud discounts and busy layouts','no'],['Don’t crowd the hero with UI','no']],
+    sample:{brand:'Atelier Ren', headline:'Quiet luxury, made to last', sub:'Considered pieces and craft, for those who notice the details.', cta:'Discover', chips:['Collection','Atelier','Journal']}},
+  {id:'devtools', name:'Developer Tools & API', emoji:'🛠️', hue:198, tags:['technical','developer','minimal','modern'], defaultMoods:['Technical','Minimal'], contrast:'dark',
+    ux:[['Put code, copy buttons and real examples front and centre','do'],['Respect a dark default and monospace for anything code-like','do'],['Make docs searchable and the quick-start truly quick','do'],['Avoid marketing fluff over substance for this audience','no'],['Don’t gate the getting-started behind a signup wall','no']],
+    sample:{brand:'Portway', headline:'Ship the integration in an afternoon', sub:'A clean API, honest docs and SDKs that just work.', cta:'Read the docs', chips:['Docs','SDKs','Status']}},
+  {id:'media', name:'Media & Publishing', emoji:'📰', hue:12, tags:['editorial','media','professional','elegant'], defaultMoods:['Elegant','Bold'], contrast:'light',
+    ux:[['Optimise for reading: measure, rhythm and typographic hierarchy','do'],['Make the next story and sections easy to reach','do'],['Keep ads and chrome from smothering the content','do'],['Avoid intrusive interruptions mid-read','no'],['Don’t sacrifice legibility for density','no']],
+    sample:{brand:'The Meridian', headline:'The story behind the story', sub:'Reporting and ideas worth your attention, beautifully read.', cta:'Read today', chips:['Latest','Sections','Saved']}}
+];
+
+/* ---- product types: influence components, charts, style nudge ---- */
+const PRODUCTS = [
+  {id:'landing', name:'Marketing website / landing page', tags:['expressive','bold'], components:['Hero','Feature grid','Social proof','Pricing table','FAQ','CTA banner','Footer'], charts:[]},
+  {id:'dashboard', name:'Dashboard / analytics app', tags:['data','professional','minimal'], components:['Sidebar nav','Stat cards','Filters','Data table','Detail drawer','Empty states'], charts:['Line (trends)','Bar (comparison)','Donut (composition)','Sparkline (inline)','Heatmap (density)']},
+  {id:'mobile', name:'Mobile app', tags:['friendly','modern'], components:['Tab bar','Cards','Bottom sheet','Pull-to-refresh','Onboarding','Toasts'], charts:['Ring progress','Bar (weekly)','Sparkline']},
+  {id:'marketplace', name:'Marketplace / storefront', tags:['consumer','bold','friendly'], components:['Search + filters','Product grid','Product page','Cart','Checkout','Reviews'], charts:['Bar (price)','Rating bars']},
+  {id:'content', name:'Content / editorial site', tags:['editorial','media','elegant'], components:['Article layout','Section nav','Author card','Related posts','Newsletter','Comments'], charts:[]},
+  {id:'saas-app', name:'Web app / SaaS product', tags:['saas','professional','modern'], components:['App shell','Command menu','Settings','Modals','Notifications','Data views'], charts:['Line','Bar','Area','Funnel']},
+  {id:'portfolio', name:'Portfolio / personal site', tags:['creative','expressive'], components:['Hero','Project grid','Case study','About','Contact','Footer'], charts:[]},
+  {id:'booking', name:'Booking / scheduling', tags:['friendly','calm','professional'], components:['Calendar','Time slots','Multi-step form','Confirmation','Reminders'], charts:['Availability bars']}
+];
+
+const PLATFORMS = [
+  {id:'web', name:'Web', stack:['React','TypeScript','Tailwind CSS','Vite','Radix UI','Framer Motion'], note:'component-driven, responsive'},
+  {id:'web-vue', name:'Web (Vue)', stack:['Vue 3','TypeScript','Tailwind CSS','Vite','Pinia'], note:'progressive, approachable'},
+  {id:'ios', name:'iOS', stack:['SwiftUI','Swift','SF Symbols','Swift Charts'], note:'native, Human Interface Guidelines'},
+  {id:'android', name:'Android', stack:['Jetpack Compose','Kotlin','Material 3','Coil'], note:'native, Material You'},
+  {id:'cross', name:'Cross-platform', stack:['Flutter','Dart','Material 3','fl_chart'], note:'one codebase, iOS + Android + web'},
+  {id:'nocode', name:'No-code / prototype', stack:['Framer','Figma','Webflow'], note:'fast to ship and validate'}
+];
+
+/* ============================================================
+   color math — HSL → hex, palette generation
+   ============================================================ */
+function hslToHex(h,s,l){
+  h=((h%360)+360)%360; s=Math.max(0,Math.min(100,s))/100; l=Math.max(0,Math.min(100,l))/100;
+  const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs(((h/60)%2)-1)), m=l-c/2;
+  let r=0,g=0,b=0;
+  if(h<60){r=c;g=x;} else if(h<120){r=x;g=c;} else if(h<180){g=c;b=x;}
+  else if(h<240){g=x;b=c;} else if(h<300){r=x;b=c;} else {r=c;b=x;}
+  const to=v=>('0'+Math.round((v+m)*255).toString(16)).slice(-2);
+  return '#'+to(r)+to(g)+to(b);
+}
+function luminance(hex){
+  const n=parseInt(hex.slice(1),16), r=(n>>16)&255, g=(n>>8)&255, b=n&255;
+  const f=v=>{v/=255; return v<=.03928? v/12.92 : Math.pow((v+.055)/1.055,2.4);};
+  return .2126*f(r)+.7152*f(g)+.0722*f(b);
+}
+function readableOn(hex){ return luminance(hex) > .42 ? '#0d0b14' : '#ffffff'; }
+function contrast(a,b){ const L1=luminance(a),L2=luminance(b),hi=Math.max(L1,L2),lo=Math.min(L1,L2); return (hi+.05)/(lo+.05); }
+
+function buildPalette(hue, style, moods, contrastPref, indContrast){
+  // saturation & lightness biases from style
+  const satMap={muted:58, vivid:82, warm:70}, s0=satMap[style.sat]||66;
+  let dark = style.contrast==='dark';
+  // in auto, let the industry's own light/dark intent lead
+  if(contrastPref==='auto'){ if(indContrast==='dark') dark=true; else if(indContrast==='light') dark=false; }
+  if(contrastPref==='dark') dark=true; if(contrastPref==='light') dark=false;
+  // apply mood saturation deltas
+  let sat=s0; moods.forEach(m=>{ if(MOODS[m]) sat+=MOODS[m].sat||0; });
+  sat=Math.max(38,Math.min(92,sat));
+  // accent harmony
+  let harmony='analogous';
+  moods.forEach(m=>{ if(MOODS[m]&&MOODS[m].harmony) harmony=MOODS[m].harmony; });
+  const offsets={analogous:32,complementary:172,split:150,triadic:120,monochrome:26};
+  const accHue=hue+(offsets[harmony]??32);
+
+  // adaptive primary: dark themes use a light primary + dark text (also stays visible on the dark canvas);
+  // light themes use a deep primary + white text. Nudge lightness until the chosen text clears 4.6:1.
+  let pL = dark?66:48, primary=hslToHex(hue,sat,pL), onPrimary;
+  if(dark){ while(contrast('#0d0b14',primary) < 4.6 && pL < 86){ pL+=2; primary=hslToHex(hue,sat,pL); } onPrimary='#0d0b14'; }
+  else    { while(contrast('#ffffff',primary) < 4.6 && pL > 28){ pL-=2; primary=hslToHex(hue,sat,pL); } onPrimary='#ffffff'; }
+  // accent lighter + more saturated so it stays visually distinct from primary
+  const accent =hslToHex(accHue, Math.min(94,sat+12), dark?70:58);
+  const bg = dark ? hslToHex(hue, 18, 8)  : hslToHex(hue, 26, 98);
+  const surface = dark ? hslToHex(hue, 16, 13) : hslToHex(hue, 22, 100);
+  const line = dark ? 'rgba(255,255,255,.12)' : hslToHex(hue, 14, 88);
+  const ink = dark ? hslToHex(hue, 14, 96) : hslToHex(hue, 30, 12);
+  const mut = dark ? hslToHex(hue, 10, 66) : hslToHex(hue, 12, 42);
+  const success=hslToHex(152, 62, dark?52:40);
+  const warning=hslToHex(40, 90, dark?58:48);
+  const danger =hslToHex(harmony==='complementary'? (accHue) : 6, 74, dark?60:50);
+  const accentSoft = dark ? hslToHex(accHue,40,20) : hslToHex(accHue,60,94);
+  return {primary,accent,bg,surface,line,ink,mut,success,warning,danger,accentSoft,
+          onPrimary, dark};
+}
+
+/* ============================================================
+   scoring & selection
+   ============================================================ */
+function activeTags(ind, moods, product){
+  const t=[...ind.tags];
+  moods.forEach(m=>{ if(MOODS[m]) t.push(...MOODS[m].tags); });
+  if(product) t.push(...product.tags);
+  return t;
+}
+function scoreByTags(candidateTags, tags){
+  let s=0; const set=new Set(tags);
+  candidateTags.forEach(ct=>{ if(set.has(ct)) s++; });
+  return s;
+}
+function pickStyle(tags, nth){
+  const ranked=STYLES.map(st=>({st, s:scoreByTags(st.tags,tags)+Math.random()*0.4}))
+    .sort((a,b)=>b.s-a.s);
+  return ranked[(nth||0)%ranked.length].st;
+}
+function pickFont(tags, style, nth){
+  const want=new Set([...style.bodyBias, ...tags]);
+  const ranked=FONTS.map(f=>({f, s:scoreByTags(f.cats,[...want]) + Math.random()*0.5}))
+    .sort((a,b)=>b.s-a.s);
+  return ranked[(nth||0)%ranked.length].f;
+}
+
+/* ============================================================
+   state + generation
+   ============================================================ */
+let selMoods=[];
+let current=null;   // the generated system
+let variant=0;
+
+function collectInputs(){
+  const ind=INDUSTRIES.find(i=>i.id===$('#f-industry').value);
+  const product=PRODUCTS.find(p=>p.id===$('#f-product').value);
+  const platform=PLATFORMS.find(p=>p.id===$('#f-platform').value);
+  const contrast=$('#f-contrast').value;
+  return {ind,product,platform,contrast};
+}
+
+function generate(bumpVariant){
+  const {ind,product,platform,contrast}=collectInputs();
+  if(!ind){ return; }
+  const moods = selMoods.length ? selMoods.slice(0,3) : ind.defaultMoods.slice(0,2);
+  variant = bumpVariant ? variant+1 : 0;
+
+  const tags=activeTags(ind,moods,product);
+  const style=pickStyle(tags, variant);
+  const font=pickFont(tags, style, variant);
+
+  // hue: industry base, nudged by first mood that specifies a hue
+  let hue=ind.hue;
+  for(const m of moods){ if(MOODS[m]&&MOODS[m].hue!=null){ hue=Math.round((hue+MOODS[m].hue)/2); break; } }
+  const pal=buildPalette(hue, style, moods, contrast, ind.contrast);
+
+  // spacing scale from density
+  const scale = style.density==='compact' ? [4,8,12,16,24,32] : [6,12,18,24,36,52];
+  const shadowMap={
+    soft:'0 10px 30px -14px rgba(0,0,0,.25)', subtle:'0 4px 14px -8px rgba(0,0,0,.22)',
+    hard:'6px 6px 0 0 rgba(0,0,0,.85)', glow:'0 12px 40px -12px rgba(0,0,0,.5)',
+    hairline:'0 1px 0 0 rgba(0,0,0,.4)', medium:'0 12px 26px -12px rgba(0,0,0,.3)', colored:'0 14px 30px -12px '+pal.accent };
+
+  current={ind,product,platform,contrast,moods,style,font,hue,pal,scale,
+    shadow:shadowMap[style.shadow]||shadowMap.soft};
+  render();
+}
+
+/* ============================================================
+   render
+   ============================================================ */
+function loadFont(f){
+  const id='kf-'+f.id;
+  if(document.getElementById(id)) return;
+  const l=document.createElement('link'); l.id=id; l.rel='stylesheet';
+  l.href=`https://fonts.googleapis.com/css2?family=${f.head.replace(/ /g,'+')}:wght@${f.hw}&family=${f.body.replace(/ /g,'+')}:wght@${f.bw}&display=swap`;
+  document.head.appendChild(l);
+}
+function esc(s){ return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+function render(){
+  const c=current, p=c.pal;
+  loadFont(c.font);
+
+  $('#out').classList.add('on');
+  $('#sys-title').textContent = `${c.ind.emoji} ${c.style.name} for ${c.ind.name}`;
+  $('#sys-brief').textContent = `${c.product.name} · ${c.platform.name} · mood: ${c.moods.join(' + ')}`;
+
+  $('#style-name').textContent = c.style.name;
+  $('#style-badge').textContent = c.style.badge;
+  $('#style-why').textContent = c.style.why;
+
+  // swatches
+  const sw=[['Primary',p.primary],['Accent',p.accent],['Background',p.bg],['Surface',p.surface],['Ink',p.ink],['Muted',p.mut],
+            ['Success',p.success],['Warning',p.warning],['Danger',p.danger],['Accent soft',p.accentSoft]];
+  $('#swatches').innerHTML = sw.map(([role,hex])=>{
+    const fg=readableOn(hex.startsWith('#')?hex:p.surface);
+    return `<div class="sw" data-hex="${hex}" style="background:${hex}"><span class="role" style="color:${fg}">${role}</span><span class="hex">${hex}</span></div>`;
+  }).join('');
+  document.querySelectorAll('.sw').forEach(el=>el.addEventListener('click',()=>copy(el.dataset.hex)));
+
+  // typography
+  $('#type-sub').textContent = c.font.note;
+  const hEl=$('#type-h'), bEl=$('#type-b');
+  hEl.style.fontFamily=`'${c.font.head}', ${serify(c.font)}`; hEl.style.color=p.ink;
+  hEl.style.fontWeight = c.font.hw.split(';').pop();
+  bEl.style.fontFamily=`'${c.font.body}', system-ui, sans-serif`;
+  $('#type-meta').innerHTML = `<span>Heading&nbsp;·&nbsp;<b>${c.font.head}</b></span><span>Body&nbsp;·&nbsp;<b>${c.font.body}</b></span><span>Base&nbsp;·&nbsp;<b>16px / 1.5</b></span>`;
+
+  // tokens
+  const toks=[['Corner radius',c.style.radius+'px'],['Density',c.style.density],['Shadow',c.style.shadow],
+    ['Spacing scale',c.scale.join(' · ')],['Base hue',Math.round(c.hue)+'°'],['Appearance',p.dark?'Dark':'Light']];
+  $('#tokens').innerHTML = toks.map(([k,v])=>`<div class="tok"><div class="k">${k}</div><div class="v">${esc(v)}</div></div>`).join('');
+
+  // ux
+  $('#ux-ind').textContent = c.ind.name;
+  $('#uxlist').innerHTML = c.ind.ux.map(([t,type])=>{
+    const cls=type==='do'?'do':'no', ic=type==='do'?'✓':'✕';
+    return `<li class="${cls}"><span class="ic">${ic}</span><span>${esc(t)}</span></li>`;
+  }).join('');
+
+  // stack + components
+  $('#stack').innerHTML = c.platform.stack.map(s=>`<span class="pill">${esc(s)}</span>`).join('');
+  const comps=[...c.product.components];
+  if(c.product.charts.length) comps.push(...c.product.charts.map(ch=>'📊 '+ch));
+  $('#components').innerHTML = comps.map(s=>`<span class="pill">${esc(s)}</span>`).join('');
+
+  renderPreview();
+}
+function serify(f){ return f.cats.includes('serif-read')?'Georgia, serif':(f.cats.includes('mono')?'ui-monospace, monospace':'system-ui, sans-serif'); }
+
+function renderPreview(){
+  const c=current, p=c.pal, s=c.sample=c.ind.sample;
+  const vars=`--p-primary:${p.primary}; --p-accent:${p.accent}; --p-bg:${p.bg}; --p-surface:${p.surface};
+    --p-line:${p.line}; --p-ink:${p.ink}; --p-mut:${p.mut}; --p-onprimary:${p.onPrimary};
+    --p-accentSoft:${p.accentSoft}; --p-radius:${c.style.radius}px; --p-shadow:${c.shadow};
+    --p-head:'${c.font.head}', ${serify(c.font)}; --p-body:'${c.font.body}', system-ui, sans-serif;`;
+  const bars=[54,72,40,88,63,78].map(h=>`<div class="bar" style="height:${h}%"></div>`).join('');
+  const isDash = c.product.id==='dashboard' || c.product.id==='saas-app';
+  const html = `<div class="ui" style="${vars}">
+    <div class="nav">
+      <div class="lg"><span class="dot"></span>${esc(s.brand)}</div>
+      <div class="links">${s.chips.map(x=>`<span>${esc(x)}</span>`).join('')}<span class="cta">${esc(s.cta)}</span></div>
+    </div>
+    <div class="hero2">
+      <span class="eyebrow">${esc(c.ind.name)}</span>
+      <h4>${esc(s.headline)}</h4>
+      <p>${esc(s.sub)}</p>
+      <div class="row"><button class="btnp">${esc(s.cta)}</button><button class="btns">Learn more</button></div>
+    </div>
+    <div class="grid3">
+      <div class="stat"><div class="n">98%</div><div class="l">Retention</div></div>
+      <div class="stat"><div class="n">2.4×</div><div class="l">Faster</div></div>
+      <div class="stat"><div class="n">4.9★</div><div class="l">Rated</div></div>
+    </div>
+    <div class="cardrow"><div class="bigcard">
+      <div class="ct">${isDash?'Performance this week':'Why teams choose '+esc(s.brand)}</div>
+      <div class="bars">${bars}</div>
+      <div class="chips2">${s.chips.map(x=>`<span>${esc(x)}</span>`).join('')}</div>
+    </div></div>
+  </div>`;
+  $('#stage').innerHTML = html;
+}
+
+/* ============================================================
+   export
+   ============================================================ */
+function tokensObject(){
+  const c=current,p=c.pal;
+  return {
+    meta:{industry:c.ind.name, product:c.product.name, platform:c.platform.name, mood:c.moods, style:c.style.name},
+    color:{primary:p.primary, accent:p.accent, background:p.bg, surface:p.surface, ink:p.ink, muted:p.mut,
+           line:p.line, success:p.success, warning:p.warning, danger:p.danger, accentSoft:p.accentSoft, onPrimary:p.onPrimary},
+    typography:{heading:c.font.head, body:c.font.body, baseSize:'16px', lineHeight:1.5},
+    radius:c.style.radius+'px', spacing:c.scale.map(n=>n+'px'), appearance:p.dark?'dark':'light'
+  };
+}
+function download(name, text){
+  const b=new Blob([text],{type:'text/plain'}); const u=URL.createObjectURL(b);
+  const a=document.createElement('a'); a.href=u; a.download=name; a.click(); URL.revokeObjectURL(u);
+  toast('Downloaded '+name);
+}
+function toCSS(){
+  const t=tokensObject();
+  const lines=[':root{'];
+  for(const [k,v] of Object.entries(t.color)) lines.push(`  --color-${k.replace(/([A-Z])/g,'-$1').toLowerCase()}: ${v};`);
+  lines.push(`  --font-heading: '${t.typography.heading}';`);
+  lines.push(`  --font-body: '${t.typography.body}';`);
+  lines.push(`  --radius: ${t.radius};`);
+  t.spacing.forEach((v,i)=>lines.push(`  --space-${i+1}: ${v};`));
+  lines.push('}');
+  return lines.join('\n');
+}
+function toTailwind(){
+  const t=tokensObject();
+  return `// tailwind.config.js — theme extension\nmodule.exports = {\n  theme: {\n    extend: {\n      colors: ${JSON.stringify(t.color,null,8).replace(/\n/g,'\n      ')},\n      fontFamily: {\n        heading: ['${t.typography.heading}', 'sans-serif'],\n        body: ['${t.typography.body}', 'sans-serif']\n      },\n      borderRadius: { DEFAULT: '${t.radius}' }\n    }\n  }\n};`;
+}
+
+/* ============================================================
+   ui helpers + wiring
+   ============================================================ */
+function toast(msg){ const t=$('#toast'); t.textContent=msg; t.classList.add('on'); clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('on'),1600); }
+function copy(text){ navigator.clipboard?.writeText(text).then(()=>toast('Copied '+text)).catch(()=>toast(text)); }
+
+function initOptions(){
+  $('#f-industry').innerHTML = INDUSTRIES.map(i=>`<option value="${i.id}">${i.emoji}  ${i.name}</option>`).join('');
+  $('#f-product').innerHTML  = PRODUCTS.map(p=>`<option value="${p.id}">${p.name}</option>`).join('');
+  $('#f-platform').innerHTML = PLATFORMS.map(p=>`<option value="${p.id}">${p.name}</option>`).join('');
+  $('#f-moods').innerHTML = Object.keys(MOODS).map(m=>`<button data-m="${m}">${m}</button>`).join('');
+  document.querySelectorAll('#f-moods button').forEach(b=>b.addEventListener('click',()=>toggleMood(b)));
+  syncDefaultMoods();
+}
+function syncDefaultMoods(){
+  const ind=INDUSTRIES.find(i=>i.id===$('#f-industry').value);
+  selMoods = ind ? ind.defaultMoods.slice(0,2) : [];
+  document.querySelectorAll('#f-moods button').forEach(b=>b.classList.toggle('on', selMoods.includes(b.dataset.m)));
+}
+function toggleMood(b){
+  const m=b.dataset.m;
+  if(selMoods.includes(m)){ selMoods=selMoods.filter(x=>x!==m); b.classList.remove('on'); }
+  else { if(selMoods.length>=3){ toast('Up to three moods'); return; } selMoods.push(m); b.classList.add('on'); }
+}
+
+function randomPick(sel){ const o=sel.options; sel.selectedIndex=Math.floor(Math.random()*o.length); }
+
+// events
+document.addEventListener('DOMContentLoaded', ()=>{
+  initOptions();
+  $('#f-industry').addEventListener('change', ()=>{ syncDefaultMoods(); });
+  $('#go').addEventListener('click', ()=>{ generate(false); $('#out').scrollIntoView({behavior:'smooth',block:'start'}); });
+  $('#regen').addEventListener('click', ()=>generate(true));
+  $('#surprise').addEventListener('click', ()=>{
+    randomPick($('#f-industry')); randomPick($('#f-product')); randomPick($('#f-platform'));
+    // random 2 moods
+    const keys=Object.keys(MOODS).sort(()=>Math.random()-.5).slice(0,2); selMoods=keys;
+    document.querySelectorAll('#f-moods button').forEach(b=>b.classList.toggle('on', selMoods.includes(b.dataset.m)));
+    generate(false); $('#out').scrollIntoView({behavior:'smooth',block:'start'});
+  });
+  document.querySelectorAll('.previewhead .devs button').forEach(b=>b.addEventListener('click',()=>{
+    document.querySelectorAll('.previewhead .devs button').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on'); $('#stage').style.maxWidth=b.dataset.w;
+  }));
+  $('#ex-json').addEventListener('click', ()=>download('kaleido-tokens.json', JSON.stringify(tokensObject(),null,2)));
+  $('#ex-css').addEventListener('click', ()=>download('kaleido-tokens.css', toCSS()));
+  $('#ex-tw').addEventListener('click', ()=>download('kaleido-tailwind.js', toTailwind()));
+});
+</script>
+</body>
+</html>
