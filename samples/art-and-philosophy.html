@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Almost Touching — Art &amp; Philosophy · The Interval</title>
+<meta name="description" content="On the small, charged distance where art and philosophy do their work — an essay, after Michelangelo's Creation of Adam. A KALEIDO motion sample.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Spectral:ital,wght@0,400;0,500;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ground:#0b0a12; --ground2:#100e19; --raised:#16121f;
+    --ivory:#ece6d8; --dim:#b7b0bf; --muted:#8b8398; --line:rgba(236,230,216,.13);
+    --ember:#f0a94b; --ember-deep:#c77b2e; --glow:rgba(240,169,75,.55);
+    --disp:'Cormorant Garamond', Georgia, serif;
+    --body:'Spectral', Georgia, serif;
+    --mono:'Space Mono', ui-monospace, monospace;
+  }
+  *{box-sizing:border-box; margin:0; padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--ground); color:var(--ivory); font-family:var(--body);
+    -webkit-font-smoothing:antialiased; overflow-x:hidden; line-height:1.72;
+    background-image:radial-gradient(120vw 90vh at 50% -20%, rgba(240,169,75,.06), transparent 60%),
+                     radial-gradient(80vw 60vh at 50% 120%, rgba(80,70,120,.10), transparent 60%);}
+  ::selection{background:rgba(240,169,75,.28); color:#fff}
+  a{color:inherit}
+  .col{max-width:640px; margin:0 auto; padding:0 24px}
+  .mono{font-family:var(--mono); text-transform:uppercase; letter-spacing:.22em; font-size:11px; color:var(--muted)}
+
+  /* reading progress */
+  #bar{position:fixed; top:0; left:0; height:2px; width:0; z-index:50;
+    background:linear-gradient(90deg,var(--ember-deep),var(--ember)); box-shadow:0 0 12px var(--glow)}
+
+  /* masthead */
+  header.mast{padding:26px 0 8px; text-align:center}
+  header.mast .name{font-family:var(--mono); font-weight:700; letter-spacing:.4em; font-size:13px; color:var(--dim)}
+  header.mast .tag{margin-top:7px; font-family:var(--mono); font-size:10px; letter-spacing:.24em; color:var(--muted); text-transform:uppercase}
+
+  /* hero */
+  .hero{text-align:center; padding:44px 0 8px}
+  .kicker{color:var(--ember); font-family:var(--mono); font-size:11px; letter-spacing:.3em; text-transform:uppercase}
+  .hero h1{font-family:var(--disp); font-weight:500; font-size:clamp(52px,10vw,116px); line-height:.98;
+    letter-spacing:-.01em; margin:20px 0 22px; text-wrap:balance}
+  .hero h1 em{font-style:italic; color:var(--ember)}
+  .standfirst{font-family:var(--disp); font-style:italic; font-weight:400; font-size:clamp(19px,2.6vw,25px);
+    line-height:1.5; color:var(--dim); max-width:30ch; margin:0 auto}
+
+  /* artwork */
+  .art{position:relative; margin:8px auto 4px; max-width:1180px; padding:0 12px}
+  .art svg{width:100%; height:auto; display:block}
+  .art .caption{margin-top:6px; text-align:center}
+  .scrollcue{display:flex; flex-direction:column; align-items:center; gap:9px; margin:14px 0 40px; color:var(--muted)}
+  .scrollcue .ln{width:1px; height:42px; background:linear-gradient(var(--muted),transparent); animation:drop 2.4s ease-in-out infinite}
+  @keyframes drop{0%,100%{opacity:.3; transform:scaleY(.7)} 50%{opacity:1; transform:scaleY(1)}}
+
+  /* essay */
+  article{padding:8px 0 40px}
+  .lede{font-size:20px; line-height:1.7}
+  .lede::first-letter{font-family:var(--disp); font-weight:600; float:left; font-size:82px; line-height:.72;
+    padding:8px 14px 0 0; color:var(--ember)}
+  p{margin:0 0 26px}
+  p.big{font-size:19px}
+  .sec{margin-top:52px}
+  .sec .eyebrow{color:var(--ember); margin-bottom:14px; display:block}
+  .sec h2{font-family:var(--disp); font-weight:500; font-size:clamp(30px,5vw,44px); line-height:1.05;
+    letter-spacing:-.01em; margin-bottom:18px; text-wrap:balance}
+
+  /* pull quote */
+  .pull{margin:64px auto; max-width:900px; padding:0 24px; text-align:center}
+  .pull .mark{font-family:var(--disp); font-size:70px; line-height:0; color:var(--ember); opacity:.5; display:block; height:34px}
+  .pull blockquote{font-family:var(--disp); font-weight:500; font-style:italic; font-size:clamp(28px,4.8vw,44px);
+    line-height:1.22; letter-spacing:-.01em; text-wrap:balance}
+
+  .rule{width:100%; max-width:640px; margin:56px auto; height:1px; background:var(--line)}
+  .coda p{font-size:19px}
+
+  footer{border-top:1px solid var(--line); margin-top:64px; padding:34px 0 60px; text-align:center}
+  footer .note{color:var(--muted); font-size:13px; line-height:1.7; max-width:56ch; margin:0 auto 14px; font-family:var(--body)}
+  footer a{color:var(--ember); text-decoration:none; border-bottom:1px solid rgba(240,169,75,.3)}
+  footer .back{font-family:var(--mono); font-size:11px; letter-spacing:.2em; text-transform:uppercase}
+
+  /* ---------- entrance + motion ---------- */
+  .rise{opacity:0; transform:translateY(26px)}
+  body.lit .rise{opacity:1; transform:none; transition:opacity 1s cubic-bezier(.22,1,.36,1), transform 1s cubic-bezier(.22,1,.36,1)}
+  body.lit .hero .kicker{transition-delay:.05s} body.lit .hero h1{transition-delay:.18s}
+  body.lit .hero .standfirst{transition-delay:.34s} body.lit .art{transition-delay:.5s}
+  body.lit .scrollcue{transition-delay:.75s}
+
+  /* reveal on scroll */
+  .reveal{opacity:0; transform:translateY(30px); transition:opacity .9s cubic-bezier(.22,1,.36,1), transform .9s cubic-bezier(.22,1,.36,1)}
+  .reveal.in{opacity:1; transform:none}
+
+  /* hands: God enters from right, Adam from left, then they breathe */
+  #adam,#god{opacity:0}
+  body.lit #adam{animation:enterL 1.6s cubic-bezier(.22,1,.36,1) .5s forwards, breatheL 6.5s ease-in-out 2.1s infinite}
+  body.lit #god{animation:enterR 1.6s cubic-bezier(.22,1,.36,1) .5s forwards, breatheR 6.5s ease-in-out 2.1s infinite}
+  @keyframes enterL{from{opacity:0; transform:translateX(-70px)} to{opacity:1; transform:translateX(0)}}
+  @keyframes enterR{from{opacity:0; transform:translateX(70px)} to{opacity:1; transform:translateX(0)}}
+  @keyframes breatheL{0%,100%{transform:translateX(-7px)} 50%{transform:translateX(2px)}}
+  @keyframes breatheR{0%,100%{transform:translateX(7px)} 50%{transform:translateX(-2px)}}
+  #spark{opacity:0; transform-box:fill-box; transform-origin:center}
+  body.lit #spark{animation:ignite 1.4s ease 1.7s forwards, pulse 3.4s ease-in-out 3s infinite}
+  @keyframes ignite{from{opacity:0} to{opacity:1}}
+  @keyframes pulse{0%,100%{opacity:.85; transform:scale(1)} 50%{opacity:1; transform:scale(1.28)}}
+  #halo{transform-box:fill-box; transform-origin:center; animation:haloDrift 9s ease-in-out infinite}
+  @keyframes haloDrift{0%,100%{opacity:.5; transform:scale(1)} 50%{opacity:.85; transform:scale(1.08)}}
+
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none !important; transition:none !important}
+    .rise,.reveal{opacity:1 !important; transform:none !important}
+    #adam,#god,#spark{opacity:1 !important}
+  }
+  @media (max-width:600px){ .hero{padding-top:24px} }
+</style>
+</head>
+<body>
+<div id="bar"></div>
+
+<header class="mast">
+  <div class="name">THE&nbsp;INTERVAL</div>
+  <div class="tag">Essays on art, mind &amp; the space between</div>
+</header>
+
+<section class="hero col">
+  <span class="kicker rise">Art &amp; Philosophy</span>
+  <h1 class="rise">Almost <em>Touching</em></h1>
+  <p class="standfirst rise">On the small, charged distance where art and philosophy do their quiet, lifelong work.</p>
+</section>
+
+<figure class="art rise">
+  <svg viewBox="0 0 1200 560" role="img" aria-label="Two hands reaching toward each other, fingertips nearly touching, after Michelangelo's Creation of Adam">
+    <defs>
+      <radialGradient id="sky" cx="50%" cy="42%" r="60%">
+        <stop offset="0" stop-color="#20182a"/><stop offset="1" stop-color="#0b0a12"/>
+      </radialGradient>
+      <linearGradient id="flesh" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#e7cfa9"/><stop offset=".55" stop-color="#c69a6a"/><stop offset="1" stop-color="#6d4d34"/>
+      </linearGradient>
+      <radialGradient id="sparkG" cx="50%" cy="50%" r="50%">
+        <stop offset="0" stop-color="#fff6e2"/><stop offset=".35" stop-color="#f0a94b"/><stop offset="1" stop-color="rgba(240,169,75,0)"/>
+      </radialGradient>
+      <filter id="soft" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="6"/></filter>
+      <filter id="lamp" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="2.2"/></filter>
+    </defs>
+
+    <rect x="0" y="0" width="1200" height="560" fill="url(#sky)"/>
+    <ellipse id="halo" cx="600" cy="286" rx="220" ry="150" fill="url(#sparkG)" opacity=".5" filter="url(#soft)"/>
+
+    <!-- Adam: left, palm-down, languid, index reaching right -->
+    <g id="adam" filter="url(#lamp)">
+      <path fill="url(#flesh)" stroke="#f3ddb8" stroke-width="1.4" stroke-opacity=".5" d="
+        M -30 372
+        C 120 356 250 352 340 350
+        C 392 349 442 346 486 340
+        L 574 322 C 588 319 592 331 580 335 L 500 350
+        C 516 360 512 374 494 372
+        C 500 388 486 398 470 390
+        C 476 406 460 414 446 404
+        C 448 420 430 424 418 412
+        C 360 424 250 424 150 416
+        C 70 410 10 408 -30 410 Z"/>
+      <path fill="none" stroke="#5b4028" stroke-width="1.2" stroke-opacity=".45" d="M486 340 C 512 346 540 344 574 322"/>
+    </g>
+
+    <!-- God: right, reaching down-left, index firm toward center -->
+    <g id="god" filter="url(#lamp)">
+      <path fill="url(#flesh)" stroke="#f3ddb8" stroke-width="1.4" stroke-opacity=".5" d="
+        M 1240 250
+        C 1080 250 970 268 892 300
+        C 850 317 812 328 780 334
+        C 748 340 704 344 664 344
+        L 626 335 C 614 331 612 344 624 348 L 720 360
+        C 704 372 710 388 730 386
+        C 724 404 742 412 756 400
+        C 754 420 774 424 786 410
+        C 846 424 960 420 1060 408
+        C 1140 398 1200 396 1240 398 Z"/>
+      <path fill="none" stroke="#5b4028" stroke-width="1.2" stroke-opacity=".45" d="M664 344 C 700 350 740 348 780 334"/>
+    </g>
+
+    <!-- the charged gap -->
+    <circle id="spark" cx="600" cy="329" r="34" fill="url(#sparkG)"/>
+    <circle cx="600" cy="329" r="2.6" fill="#fff7e6"/>
+  </svg>
+  <figcaption class="caption mono">After Michelangelo · The Creation of Adam · c. 1512</figcaption>
+</figure>
+
+<div class="scrollcue rise">
+  <span class="mono">Read</span>
+  <span class="ln"></span>
+</div>
+
+<article class="col">
+  <p class="lede">For five centuries the most famous gesture in Western art has been left deliberately unfinished. Michelangelo painted two hands reaching across a sliver of bare plaster — and then did not close the gap. God strains toward Adam; Adam barely lifts his arm; and between their fingers there remains a distance you could cover with a coin. The whole force of the picture lives in that distance. It is the reason we are still looking.</p>
+
+  <p>We tend to assume meaning arrives at the moment things connect — when the answer lands, the lesson takes, the hands finally touch. The ceiling proposes something stranger: that the charge is in the approach, not the contact. Art and philosophy are the two arms of that reach. One comes at the world through the senses, the other through the argument, and each spends its life extending toward a meaning it never quite grips.</p>
+
+  <div class="sec reveal">
+    <span class="eyebrow mono">The first hand — art</span>
+    <h2>Art reaches through the eye.</h2>
+    <p class="big">A painting does not tell you what to think; it rearranges what you notice. Stand in front of the right image and your attention is quietly re-plumbed — the ordinary made strange enough to see again. That is not decoration. It is a technology for widening the aperture of a life, for making a person feel the weight of things they had stopped weighing.</p>
+  </div>
+
+  <div class="sec reveal">
+    <span class="eyebrow mono">The second hand — philosophy</span>
+    <h2>Philosophy reaches through the question.</h2>
+    <p class="big">Where art enlarges perception, philosophy interrogates it. It asks what you actually mean by the words you live by — freedom, good, self, enough — and refuses the comfortable answer. It is uncomfortable on purpose. Its gift is not certainty but a better quality of doubt: the kind that keeps you honest, and keeps the reach alive.</p>
+  </div>
+</article>
+
+<div class="pull reveal">
+  <span class="mark">&ldquo;</span>
+  <blockquote>Meaning is not held in either hand. It is the current that leaps the gap.</blockquote>
+</div>
+
+<article class="col">
+  <div class="sec reveal">
+    <span class="eyebrow mono">What it does to a life</span>
+    <h2>None of this is abstract.</h2>
+    <p class="big">A poem read at the right hour has talked people back from despair. A single idea — that you are not your thoughts; that suffering is not an argument against living — has reorganised whole biographies. Art and philosophy change what a person can perceive and what they can bear, and those two changes are most of what we mean when we say a life is going well.</p>
+  </div>
+
+  <div class="rule"></div>
+
+  <div class="coda reveal">
+    <span class="eyebrow mono">Coda</span>
+    <p>So we live where Michelangelo left us: mid-reach, fingers out, the touch forever a coin's width away. It can feel like failure. It is not. That un-closed gap is the space in which everything human happens — the wanting, the making, the asking. To keep reaching across it, knowingly, is the whole of the work. Art shows us the gap is beautiful. Philosophy insists it is worth crossing.</p>
+  </div>
+</article>
+
+<footer>
+  <div class="col">
+    <p class="note">After Michelangelo, <em>The Creation of Adam</em> (Sistine Chapel ceiling, c.&nbsp;1508–1512) — a public-domain work, rendered here as an original animation. Text and artwork original to this page.</p>
+    <p class="note">A sample page built with the <strong>KALEIDO</strong> motion system — fluid transitions, zero dependencies.</p>
+    <a class="back" href="../index.html">← Back to KALEIDO</a>
+  </div>
+</footer>
+
+<script>
+  // ignite the page-load sequence
+  requestAnimationFrame(function(){ document.body.classList.add('lit'); });
+
+  // reading progress
+  var bar = document.getElementById('bar');
+  function onScroll(){
+    var h = document.documentElement, max = h.scrollHeight - h.clientHeight;
+    bar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + '%';
+  }
+  addEventListener('scroll', onScroll, {passive:true}); onScroll();
+
+  // scroll reveals
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, {threshold:.18, rootMargin:'0px 0px -8% 0px'});
+  document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+
+  // gentle parallax on the artwork
+  var art = document.querySelector('.art svg');
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(!reduce){
+    addEventListener('scroll', function(){
+      var y = Math.min(scrollY, 600);
+      art.style.transform = 'translateY(' + (y * 0.06) + 'px) scale(' + (1 - y*0.00006) + ')';
+    }, {passive:true});
+  }
+</script>
+</body>
+</html>

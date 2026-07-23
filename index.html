@@ -51,6 +51,10 @@
   .hero p.lede{font:400 clamp(16px,2.1vw,20px)/1.55 var(--sans); color:var(--mut); max-width:58ch; margin:0 auto}
   .hero .tags{display:flex; gap:8px; flex-wrap:wrap; justify-content:center; margin-top:22px}
   .hero .tags span{font:500 12px/1 var(--sans); color:var(--mut); border:1px solid var(--line); border-radius:999px; padding:8px 14px}
+  .samplelink{display:inline-block; margin-top:22px; font:500 13px/1.5 var(--sans); color:var(--ink); text-decoration:none;
+    border:1px solid var(--line); border-radius:999px; padding:11px 20px; background:rgba(124,92,255,.08); transition:border-color .25s, background .25s, transform .25s}
+  .samplelink em{font-style:italic; color:var(--a4)}
+  .samplelink:hover{border-color:var(--a1); background:rgba(124,92,255,.16); transform:translateY(-2px)}
 
   /* builder */
   .builder{background:linear-gradient(180deg,var(--card),rgba(24,19,39,.6)); border:1px solid var(--line);
@@ -212,6 +216,7 @@
     </a>
     <div class="head-links">
       <a href="#top">Generator</a>
+      <a href="samples/art-and-philosophy.html">Sample</a>
       <a href="https://github.com/sougatshekharhota/kaleido" target="_blank" rel="noopener">GitHub</a>
       <a href="https://sougatshekharhota.github.io/portfolio/">← Portfolio</a>
     </div>
@@ -230,6 +235,7 @@
     <h1>One brief in.<br>A <span class="grad">whole design system</span> out.</h1>
     <p class="lede">Tell KALEIDO your industry, product and the mood you're after. It refracts that into a complete, coherent system — style direction, color palette, type pairing, layout tokens, UX guidance and a live preview you can export.</p>
     <div class="tags"><span>🎨 Any industry</span><span>⚡ Instant</span><span>🔒 Runs in your browser</span><span>📦 Export tokens</span></div>
+    <a class="samplelink" href="samples/art-and-philosophy.html">✦&nbsp; See a sample essay — <em>“Almost Touching”</em>, built in this motion system&nbsp; →</a>
   </section>
 
   <section class="builder" id="builder">
