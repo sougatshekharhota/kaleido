@@ -4,186 +4,134 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Almost Touching — Art &amp; Philosophy · The Interval</title>
-<meta name="description" content="On the small, charged distance where art and philosophy do their work — an essay, after Michelangelo's Creation of Adam. A KALEIDO motion sample.">
+<meta name="description" content="On the small, charged distance where art and philosophy do their work — an essay beside Michelangelo's Creation of Adam. A KALEIDO motion sample.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Spectral:ital,wght@0,400;0,500;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Spectral:ital,wght@0,400;0,500;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --ground:#0b0a12; --ground2:#100e19; --raised:#16121f;
-    --ivory:#ece6d8; --dim:#b7b0bf; --muted:#8b8398; --line:rgba(236,230,216,.13);
-    --ember:#f0a94b; --ember-deep:#c77b2e; --glow:rgba(240,169,75,.55);
-    --disp:'Cormorant Garamond', Georgia, serif;
+    --paper:#f2ead6; --paper2:#ece0c8; --raised:#f7f1e2;
+    --ink:#2b2116; --dim:#4f4130; --muted:#847057; --line:rgba(43,33,22,.16);
+    --sienna:#a9532c; --sienna-deep:#8a3f1f; --ochre:#c0892f; --glow:rgba(230,178,96,.9);
+    --disp:'Fraunces', Georgia, 'Times New Roman', serif;
     --body:'Spectral', Georgia, serif;
     --mono:'Space Mono', ui-monospace, monospace;
   }
   *{box-sizing:border-box; margin:0; padding:0}
   html{scroll-behavior:smooth}
-  body{background:var(--ground); color:var(--ivory); font-family:var(--body);
-    -webkit-font-smoothing:antialiased; overflow-x:hidden; line-height:1.72;
-    background-image:radial-gradient(120vw 90vh at 50% -20%, rgba(240,169,75,.06), transparent 60%),
-                     radial-gradient(80vw 60vh at 50% 120%, rgba(80,70,120,.10), transparent 60%);}
-  ::selection{background:rgba(240,169,75,.28); color:#fff}
+  body{background:var(--paper); color:var(--ink); font-family:var(--body);
+    -webkit-font-smoothing:antialiased; overflow-x:hidden; line-height:1.74;
+    background-image:radial-gradient(120vw 80vh at 50% -12%, rgba(169,83,44,.07), transparent 60%),
+                     radial-gradient(100vw 70vh at 50% 120%, rgba(120,88,48,.09), transparent 62%);}
+  /* rustic plaster grain */
+  .grain{position:fixed; inset:0; z-index:0; pointer-events:none; opacity:.05; mix-blend-mode:multiply;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  ::selection{background:rgba(192,137,47,.32)}
   a{color:inherit}
-  .col{max-width:640px; margin:0 auto; padding:0 24px}
-  .mono{font-family:var(--mono); text-transform:uppercase; letter-spacing:.22em; font-size:11px; color:var(--muted)}
+  .col{max-width:648px; margin:0 auto; padding:0 24px; position:relative; z-index:1}
+  .mono{font-family:var(--mono); text-transform:uppercase; letter-spacing:.2em; font-size:11px; color:var(--muted)}
 
-  /* reading progress */
-  #bar{position:fixed; top:0; left:0; height:2px; width:0; z-index:50;
-    background:linear-gradient(90deg,var(--ember-deep),var(--ember)); box-shadow:0 0 12px var(--glow)}
+  #bar{position:fixed; top:0; left:0; height:3px; width:0; z-index:50;
+    background:linear-gradient(90deg,var(--sienna-deep),var(--ochre)); box-shadow:0 0 10px rgba(192,137,47,.5)}
 
-  /* masthead */
-  header.mast{padding:26px 0 8px; text-align:center}
-  header.mast .name{font-family:var(--mono); font-weight:700; letter-spacing:.4em; font-size:13px; color:var(--dim)}
+  header.mast{padding:24px 0 6px; text-align:center; position:relative; z-index:1}
+  header.mast .name{font-family:var(--mono); font-weight:700; letter-spacing:.42em; font-size:13px; color:var(--sienna)}
   header.mast .tag{margin-top:7px; font-family:var(--mono); font-size:10px; letter-spacing:.24em; color:var(--muted); text-transform:uppercase}
+  .divider{width:44px; height:1px; background:var(--line); margin:18px auto 0}
 
-  /* hero */
-  .hero{text-align:center; padding:44px 0 8px}
-  .kicker{color:var(--ember); font-family:var(--mono); font-size:11px; letter-spacing:.3em; text-transform:uppercase}
-  .hero h1{font-family:var(--disp); font-weight:500; font-size:clamp(52px,10vw,116px); line-height:.98;
-    letter-spacing:-.01em; margin:20px 0 22px; text-wrap:balance}
-  .hero h1 em{font-style:italic; color:var(--ember)}
-  .standfirst{font-family:var(--disp); font-style:italic; font-weight:400; font-size:clamp(19px,2.6vw,25px);
-    line-height:1.5; color:var(--dim); max-width:30ch; margin:0 auto}
+  .hero{text-align:center; padding:40px 0 26px; position:relative; z-index:1}
+  .kicker{color:var(--sienna); font-family:var(--mono); font-size:11px; letter-spacing:.3em; text-transform:uppercase}
+  .hero h1{font-family:var(--disp); font-weight:500; font-size:clamp(50px,9.5vw,108px); line-height:.98;
+    letter-spacing:-.015em; margin:18px 0 22px; text-wrap:balance; font-optical-sizing:auto}
+  .hero h1 em{font-style:italic; color:var(--sienna)}
+  .standfirst{font-family:var(--disp); font-style:italic; font-weight:400; font-size:clamp(19px,2.5vw,25px);
+    line-height:1.5; color:var(--dim); max-width:32ch; margin:0 auto}
+  .byline{margin-top:20px}
 
-  /* artwork */
-  .art{position:relative; margin:8px auto 4px; max-width:1180px; padding:0 12px}
-  .art svg{width:100%; height:auto; display:block}
-  .art .caption{margin-top:6px; text-align:center}
-  .scrollcue{display:flex; flex-direction:column; align-items:center; gap:9px; margin:14px 0 40px; color:var(--muted)}
-  .scrollcue .ln{width:1px; height:42px; background:linear-gradient(var(--muted),transparent); animation:drop 2.4s ease-in-out infinite}
+  /* feature painting */
+  .feature{max-width:1180px; margin:14px auto 6px; padding:0 20px; position:relative; z-index:1}
+  .frame{position:relative; overflow:hidden; border-radius:3px; box-shadow:0 30px 70px -34px rgba(43,33,22,.55), 0 2px 0 rgba(255,255,255,.4) inset;
+    border:1px solid rgba(43,33,22,.14)}
+  .frame img{display:block; width:100%; height:auto; will-change:transform;
+    animation:kenburns 26s ease-in-out infinite alternate}
+  .frame::after{content:""; position:absolute; inset:0; pointer-events:none;
+    box-shadow:inset 0 0 120px rgba(43,25,12,.28); mix-blend-mode:multiply}
+  .spark{position:absolute; left:37%; top:45%; width:15%; aspect-ratio:1; transform:translate(-50%,-50%);
+    background:radial-gradient(circle, rgba(255,244,214,.95), rgba(226,168,84,.55) 34%, transparent 70%);
+    mix-blend-mode:screen; filter:blur(3px); pointer-events:none; opacity:0}
+  body.lit .spark{animation:sparkPulse 3.8s ease-in-out 1.2s infinite}
+  .feature figcaption{margin-top:12px; text-align:center}
+
+  @keyframes kenburns{from{transform:scale(1.005)} to{transform:scale(1.06) translateX(-1.2%)}}
+  @keyframes sparkPulse{0%,100%{opacity:.42; transform:translate(-50%,-50%) scale(.88)} 50%{opacity:.92; transform:translate(-50%,-50%) scale(1.14)}}
+
+  .scrollcue{display:flex; flex-direction:column; align-items:center; gap:9px; margin:22px 0 36px; color:var(--muted); position:relative; z-index:1}
+  .scrollcue .ln{width:1px; height:40px; background:linear-gradient(var(--muted),transparent); animation:drop 2.4s ease-in-out infinite}
   @keyframes drop{0%,100%{opacity:.3; transform:scaleY(.7)} 50%{opacity:1; transform:scaleY(1)}}
 
-  /* essay */
-  article{padding:8px 0 40px}
-  .lede{font-size:20px; line-height:1.7}
-  .lede::first-letter{font-family:var(--disp); font-weight:600; float:left; font-size:82px; line-height:.72;
-    padding:8px 14px 0 0; color:var(--ember)}
+  article{padding:6px 0 34px}
+  .lede{font-size:20px; line-height:1.72}
+  .lede::first-letter{font-family:var(--disp); font-weight:600; float:left; font-size:86px; line-height:.7;
+    padding:9px 14px 0 0; color:var(--sienna)}
   p{margin:0 0 26px}
   p.big{font-size:19px}
   .sec{margin-top:52px}
-  .sec .eyebrow{color:var(--ember); margin-bottom:14px; display:block}
-  .sec h2{font-family:var(--disp); font-weight:500; font-size:clamp(30px,5vw,44px); line-height:1.05;
+  .sec .eyebrow{color:var(--sienna); margin-bottom:14px; display:block}
+  .sec h2{font-family:var(--disp); font-weight:500; font-size:clamp(30px,5vw,44px); line-height:1.06;
     letter-spacing:-.01em; margin-bottom:18px; text-wrap:balance}
 
-  /* pull quote */
-  .pull{margin:64px auto; max-width:900px; padding:0 24px; text-align:center}
-  .pull .mark{font-family:var(--disp); font-size:70px; line-height:0; color:var(--ember); opacity:.5; display:block; height:34px}
-  .pull blockquote{font-family:var(--disp); font-weight:500; font-style:italic; font-size:clamp(28px,4.8vw,44px);
-    line-height:1.22; letter-spacing:-.01em; text-wrap:balance}
+  .pull{margin:64px auto; max-width:900px; padding:0 24px; text-align:center; position:relative; z-index:1}
+  .pull .mark{font-family:var(--disp); font-size:76px; line-height:0; color:var(--ochre); display:block; height:38px}
+  .pull blockquote{font-family:var(--disp); font-weight:500; font-style:italic; font-size:clamp(28px,4.7vw,44px);
+    line-height:1.24; letter-spacing:-.01em; text-wrap:balance}
 
-  .rule{width:100%; max-width:640px; margin:56px auto; height:1px; background:var(--line)}
+  .rule{width:100%; max-width:648px; margin:56px auto; height:1px; background:var(--line)}
   .coda p{font-size:19px}
 
-  footer{border-top:1px solid var(--line); margin-top:64px; padding:34px 0 60px; text-align:center}
-  footer .note{color:var(--muted); font-size:13px; line-height:1.7; max-width:56ch; margin:0 auto 14px; font-family:var(--body)}
-  footer a{color:var(--ember); text-decoration:none; border-bottom:1px solid rgba(240,169,75,.3)}
-  footer .back{font-family:var(--mono); font-size:11px; letter-spacing:.2em; text-transform:uppercase}
+  footer{border-top:1px solid var(--line); margin-top:60px; padding:34px 0 60px; text-align:center; position:relative; z-index:1}
+  footer .note{color:var(--muted); font-size:13px; line-height:1.7; max-width:58ch; margin:0 auto 14px; font-family:var(--body)}
+  footer em{color:var(--dim)}
+  footer .back{font-family:var(--mono); font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--sienna); text-decoration:none; border-bottom:1px solid rgba(169,83,44,.35)}
 
-  /* ---------- entrance + motion ---------- */
-  .rise{opacity:0; transform:translateY(26px)}
+  /* motion */
+  .rise{opacity:0; transform:translateY(24px)}
   body.lit .rise{opacity:1; transform:none; transition:opacity 1s cubic-bezier(.22,1,.36,1), transform 1s cubic-bezier(.22,1,.36,1)}
   body.lit .hero .kicker{transition-delay:.05s} body.lit .hero h1{transition-delay:.18s}
-  body.lit .hero .standfirst{transition-delay:.34s} body.lit .art{transition-delay:.5s}
-  body.lit .scrollcue{transition-delay:.75s}
-
-  /* reveal on scroll */
-  .reveal{opacity:0; transform:translateY(30px); transition:opacity .9s cubic-bezier(.22,1,.36,1), transform .9s cubic-bezier(.22,1,.36,1)}
+  body.lit .hero .standfirst{transition-delay:.32s} body.lit .hero .byline{transition-delay:.44s}
+  body.lit .feature{transition-delay:.52s} body.lit .scrollcue{transition-delay:.8s}
+  .reveal{opacity:0; transform:translateY(28px); transition:opacity .9s cubic-bezier(.22,1,.36,1), transform .9s cubic-bezier(.22,1,.36,1)}
   .reveal.in{opacity:1; transform:none}
-
-  /* hands: God enters from right, Adam from left, then they breathe */
-  #adam,#god{opacity:0}
-  body.lit #adam{animation:enterL 1.6s cubic-bezier(.22,1,.36,1) .5s forwards, breatheL 6.5s ease-in-out 2.1s infinite}
-  body.lit #god{animation:enterR 1.6s cubic-bezier(.22,1,.36,1) .5s forwards, breatheR 6.5s ease-in-out 2.1s infinite}
-  @keyframes enterL{from{opacity:0; transform:translateX(-70px)} to{opacity:1; transform:translateX(0)}}
-  @keyframes enterR{from{opacity:0; transform:translateX(70px)} to{opacity:1; transform:translateX(0)}}
-  @keyframes breatheL{0%,100%{transform:translateX(-7px)} 50%{transform:translateX(2px)}}
-  @keyframes breatheR{0%,100%{transform:translateX(7px)} 50%{transform:translateX(-2px)}}
-  #spark{opacity:0; transform-box:fill-box; transform-origin:center}
-  body.lit #spark{animation:ignite 1.4s ease 1.7s forwards, pulse 3.4s ease-in-out 3s infinite}
-  @keyframes ignite{from{opacity:0} to{opacity:1}}
-  @keyframes pulse{0%,100%{opacity:.85; transform:scale(1)} 50%{opacity:1; transform:scale(1.28)}}
-  #halo{transform-box:fill-box; transform-origin:center; animation:haloDrift 9s ease-in-out infinite}
-  @keyframes haloDrift{0%,100%{opacity:.5; transform:scale(1)} 50%{opacity:.85; transform:scale(1.08)}}
 
   @media (prefers-reduced-motion:reduce){
     *{animation:none !important; transition:none !important}
-    .rise,.reveal{opacity:1 !important; transform:none !important}
-    #adam,#god,#spark{opacity:1 !important}
+    .rise,.reveal{opacity:1 !important; transform:none !important} .spark{opacity:.6 !important}
   }
-  @media (max-width:600px){ .hero{padding-top:24px} }
+  @media (max-width:600px){ .hero{padding-top:22px} .lede::first-letter{font-size:70px} }
 </style>
 </head>
 <body>
+<div class="grain"></div>
 <div id="bar"></div>
 
 <header class="mast">
   <div class="name">THE&nbsp;INTERVAL</div>
   <div class="tag">Essays on art, mind &amp; the space between</div>
+  <div class="divider"></div>
 </header>
 
 <section class="hero col">
   <span class="kicker rise">Art &amp; Philosophy</span>
   <h1 class="rise">Almost <em>Touching</em></h1>
   <p class="standfirst rise">On the small, charged distance where art and philosophy do their quiet, lifelong work.</p>
+  <div class="byline rise mono">An essay · beside Michelangelo</div>
 </section>
 
-<figure class="art rise">
-  <svg viewBox="0 0 1200 560" role="img" aria-label="Two hands reaching toward each other, fingertips nearly touching, after Michelangelo's Creation of Adam">
-    <defs>
-      <radialGradient id="sky" cx="50%" cy="42%" r="60%">
-        <stop offset="0" stop-color="#20182a"/><stop offset="1" stop-color="#0b0a12"/>
-      </radialGradient>
-      <linearGradient id="flesh" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="#e7cfa9"/><stop offset=".55" stop-color="#c69a6a"/><stop offset="1" stop-color="#6d4d34"/>
-      </linearGradient>
-      <radialGradient id="sparkG" cx="50%" cy="50%" r="50%">
-        <stop offset="0" stop-color="#fff6e2"/><stop offset=".35" stop-color="#f0a94b"/><stop offset="1" stop-color="rgba(240,169,75,0)"/>
-      </radialGradient>
-      <filter id="soft" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="6"/></filter>
-      <filter id="lamp" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="2.2"/></filter>
-    </defs>
-
-    <rect x="0" y="0" width="1200" height="560" fill="url(#sky)"/>
-    <ellipse id="halo" cx="600" cy="286" rx="220" ry="150" fill="url(#sparkG)" opacity=".5" filter="url(#soft)"/>
-
-    <!-- Adam: left, palm-down, languid, index reaching right -->
-    <g id="adam" filter="url(#lamp)">
-      <path fill="url(#flesh)" stroke="#f3ddb8" stroke-width="1.4" stroke-opacity=".5" d="
-        M -30 372
-        C 120 356 250 352 340 350
-        C 392 349 442 346 486 340
-        L 574 322 C 588 319 592 331 580 335 L 500 350
-        C 516 360 512 374 494 372
-        C 500 388 486 398 470 390
-        C 476 406 460 414 446 404
-        C 448 420 430 424 418 412
-        C 360 424 250 424 150 416
-        C 70 410 10 408 -30 410 Z"/>
-      <path fill="none" stroke="#5b4028" stroke-width="1.2" stroke-opacity=".45" d="M486 340 C 512 346 540 344 574 322"/>
-    </g>
-
-    <!-- God: right, reaching down-left, index firm toward center -->
-    <g id="god" filter="url(#lamp)">
-      <path fill="url(#flesh)" stroke="#f3ddb8" stroke-width="1.4" stroke-opacity=".5" d="
-        M 1240 250
-        C 1080 250 970 268 892 300
-        C 850 317 812 328 780 334
-        C 748 340 704 344 664 344
-        L 626 335 C 614 331 612 344 624 348 L 720 360
-        C 704 372 710 388 730 386
-        C 724 404 742 412 756 400
-        C 754 420 774 424 786 410
-        C 846 424 960 420 1060 408
-        C 1140 398 1200 396 1240 398 Z"/>
-      <path fill="none" stroke="#5b4028" stroke-width="1.2" stroke-opacity=".45" d="M664 344 C 700 350 740 348 780 334"/>
-    </g>
-
-    <!-- the charged gap -->
-    <circle id="spark" cx="600" cy="329" r="34" fill="url(#sparkG)"/>
-    <circle cx="600" cy="329" r="2.6" fill="#fff7e6"/>
-  </svg>
-  <figcaption class="caption mono">After Michelangelo · The Creation of Adam · c. 1512</figcaption>
+<figure class="feature rise">
+  <div class="frame">
+    <img src="assets/creation-of-adam.jpg" alt="Michelangelo's fresco The Creation of Adam: God reaches from the right toward Adam on the left, their index fingers almost meeting." loading="eager" width="1707" height="775">
+    <span class="spark" aria-hidden="true"></span>
+  </div>
+  <figcaption class="mono">Michelangelo · The Creation of Adam · Sistine Chapel, c.&nbsp;1512 · public domain</figcaption>
 </figure>
 
 <div class="scrollcue rise">
@@ -231,17 +179,15 @@
 
 <footer>
   <div class="col">
-    <p class="note">After Michelangelo, <em>The Creation of Adam</em> (Sistine Chapel ceiling, c.&nbsp;1508–1512) — a public-domain work, rendered here as an original animation. Text and artwork original to this page.</p>
-    <p class="note">A sample page built with the <strong>KALEIDO</strong> motion system — fluid transitions, zero dependencies.</p>
+    <p class="note"><em>The Creation of Adam</em> by Michelangelo (Sistine Chapel ceiling, c.&nbsp;1508–1512) is in the public domain; image via Wikimedia Commons. The essay is original to this page.</p>
+    <p class="note">A sample built with the <strong>KALEIDO</strong> motion system — fluid transitions, zero dependencies.</p>
     <a class="back" href="../index.html">← Back to KALEIDO</a>
   </div>
 </footer>
 
 <script>
-  // ignite the page-load sequence
   requestAnimationFrame(function(){ document.body.classList.add('lit'); });
 
-  // reading progress
   var bar = document.getElementById('bar');
   function onScroll(){
     var h = document.documentElement, max = h.scrollHeight - h.clientHeight;
@@ -249,19 +195,17 @@
   }
   addEventListener('scroll', onScroll, {passive:true}); onScroll();
 
-  // scroll reveals
   var io = new IntersectionObserver(function(entries){
     entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
-  }, {threshold:.18, rootMargin:'0px 0px -8% 0px'});
+  }, {threshold:.16, rootMargin:'0px 0px -8% 0px'});
   document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
 
-  // gentle parallax on the artwork
-  var art = document.querySelector('.art svg');
-  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if(!reduce){
+  // gentle parallax on the painting
+  var frame = document.querySelector('.frame');
+  if(!matchMedia('(prefers-reduced-motion: reduce)').matches){
     addEventListener('scroll', function(){
-      var y = Math.min(scrollY, 600);
-      art.style.transform = 'translateY(' + (y * 0.06) + 'px) scale(' + (1 - y*0.00006) + ')';
+      var y = Math.min(scrollY, 700);
+      frame.style.transform = 'translateY(' + (y * 0.05) + 'px)';
     }, {passive:true});
   }
 </script>
