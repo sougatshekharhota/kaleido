@@ -179,14 +179,14 @@
     background:radial-gradient(closest-side, var(--p-accent), transparent 72%); opacity:.30; animation:floaty 6.5s ease-in-out infinite}
   .ui .hero2 > *{position:relative; z-index:1}
   .ui.animate .hero2 .eyebrow, .ui.animate .hero2 h4, .ui.animate .hero2 p, .ui.animate .hero2 .row,
-  .ui.animate .grid3 .stat, .ui.animate .cardrow .bigcard{opacity:0; animation:fadeUp .7s cubic-bezier(.22,1,.36,1) both}
+  .ui.animate .grid3 .stat, .ui.animate .cardrow .bigcard{opacity:0; animation:fadeUp var(--pv-dur,.7s) var(--pv-ease,cubic-bezier(.22,1,.36,1)) both}
   .ui.animate .hero2 h4{animation-delay:.08s} .ui.animate .hero2 p{animation-delay:.18s} .ui.animate .hero2 .row{animation-delay:.28s}
   .ui.animate .grid3 .stat:nth-child(1){animation-delay:.34s} .ui.animate .grid3 .stat:nth-child(2){animation-delay:.42s} .ui.animate .grid3 .stat:nth-child(3){animation-delay:.50s}
   .ui.animate .cardrow .bigcard{animation-delay:.58s}
-  .ui .btnp, .ui .btns, .ui .nav .links .cta, .ui .stat, .ui .bigcard{transition:transform .3s cubic-bezier(.22,1,.36,1), box-shadow .3s, filter .3s}
+  .ui .btnp, .ui .btns, .ui .nav .links .cta, .ui .stat, .ui .bigcard{transition:transform var(--pv-dur,.3s) var(--pv-ease,cubic-bezier(.22,1,.36,1)), box-shadow .3s, filter .3s}
   .ui .btnp:hover, .ui .nav .links .cta:hover{transform:translateY(-2px); filter:brightness(1.06)}
   .ui .btns:hover, .ui .stat:hover, .ui .bigcard:hover{transform:translateY(-3px)}
-  .ui.animate .bars .bar{animation:barGrow .8s cubic-bezier(.22,1,.36,1) both; transform-origin:bottom}
+  .ui.animate .bars .bar{animation:barGrow var(--pv-dur,.8s) var(--pv-ease,cubic-bezier(.22,1,.36,1)) both; transform-origin:bottom}
   .ui.animate .bars .bar:nth-child(2){animation-delay:.06s} .ui.animate .bars .bar:nth-child(3){animation-delay:.12s}
   .ui.animate .bars .bar:nth-child(4){animation-delay:.18s} .ui.animate .bars .bar:nth-child(5){animation-delay:.24s} .ui.animate .bars .bar:nth-child(6){animation-delay:.30s}
   @media (prefers-reduced-motion: reduce){ *{animation:none !important; transition:none !important} }
@@ -263,6 +263,10 @@
           <option value="light">Light</option>
           <option value="dark">Dark</option>
         </select>
+      </div>
+      <div class="field">
+        <label for="f-motion">Motion style</label>
+        <select id="f-motion"></select>
       </div>
     </div>
     <div class="actions">
@@ -428,6 +432,14 @@ const MOODS = {
   Calm:{tags:['calm','minimal'], hue:170, sat:-10, harmony:'analogous'},
   Playful:{tags:['playful','friendly','energetic'], hue:330, sat:14, harmony:'triadic'},
   Minimal:{tags:['minimal','calm','professional'], hue:null, sat:-14, harmony:'monochrome'}
+};
+
+/* ---- motion styles: easing + durations for the preview and the exported page ---- */
+const MOTIONS = {
+  Fluid:   {ease:'cubic-bezier(.22,1,.36,1)',   fast:'180ms', base:'320ms', slow:'620ms', pv:'.7s'},
+  Calm:    {ease:'cubic-bezier(.4,0,.2,1)',      fast:'220ms', base:'440ms', slow:'780ms', pv:'.95s'},
+  Lively:  {ease:'cubic-bezier(.34,1.56,.64,1)', fast:'150ms', base:'300ms', slow:'560ms', pv:'.6s'},
+  Minimal: {ease:'ease',                          fast:'110ms', base:'190ms', slow:'300ms', pv:'.38s'}
 };
 
 /* ---- industries: base identity + UX guidance + sample copy ---- */
@@ -603,11 +615,12 @@ function collectInputs(){
   const product=PRODUCTS.find(p=>p.id===$('#f-product').value);
   const platform=PLATFORMS.find(p=>p.id===$('#f-platform').value);
   const contrast=$('#f-contrast').value;
-  return {ind,product,platform,contrast};
+  const motionName=$('#f-motion').value || 'Fluid';
+  return {ind,product,platform,contrast, motionName, motion:MOTIONS[motionName]||MOTIONS.Fluid};
 }
 
 function generate(bumpVariant){
-  const {ind,product,platform,contrast}=collectInputs();
+  const {ind,product,platform,contrast,motion,motionName}=collectInputs();
   if(!ind){ return; }
   const moods = selMoods.length ? selMoods.slice(0,3) : ind.defaultMoods.slice(0,2);
   variant = bumpVariant ? variant+1 : 0;
@@ -628,7 +641,7 @@ function generate(bumpVariant){
     hard:'6px 6px 0 0 rgba(0,0,0,.85)', glow:'0 12px 40px -12px rgba(0,0,0,.5)',
     hairline:'0 1px 0 0 rgba(0,0,0,.4)', medium:'0 12px 26px -12px rgba(0,0,0,.3)', colored:'0 14px 30px -12px '+pal.accent };
 
-  current={ind,product,platform,contrast,moods,style,font,hue,pal,scale,
+  current={ind,product,platform,contrast,moods,style,font,hue,pal,scale,motion,motionName,
     shadow:shadowMap[style.shadow]||shadowMap.soft};
   render();
 }
@@ -676,7 +689,8 @@ function render(){
 
   // tokens
   const toks=[['Corner radius',c.style.radius+'px'],['Density',c.style.density],['Shadow',c.style.shadow],
-    ['Spacing scale',c.scale.join(' · ')],['Base hue',Math.round(c.hue)+'°'],['Appearance',p.dark?'Dark':'Light']];
+    ['Spacing scale',c.scale.join(' · ')],['Base hue',Math.round(c.hue)+'°'],['Appearance',p.dark?'Dark':'Light'],
+    ['Motion style',c.motionName],['Easing',c.motion.ease.replace('cubic-bezier','cb')]];
   $('#tokens').innerHTML = toks.map(([k,v])=>`<div class="tok"><div class="k">${k}</div><div class="v">${esc(v)}</div></div>`).join('');
 
   // ux
@@ -701,7 +715,8 @@ function renderPreview(){
   const vars=`--p-primary:${p.primary}; --p-accent:${p.accent}; --p-bg:${p.bg}; --p-surface:${p.surface};
     --p-line:${p.line}; --p-ink:${p.ink}; --p-mut:${p.mut}; --p-onprimary:${p.onPrimary};
     --p-accentSoft:${p.accentSoft}; --p-radius:${c.style.radius}px; --p-shadow:${c.shadow};
-    --p-head:'${c.font.head}', ${serify(c.font)}; --p-body:'${c.font.body}', system-ui, sans-serif;`;
+    --p-head:'${c.font.head}', ${serify(c.font)}; --p-body:'${c.font.body}', system-ui, sans-serif;
+    --pv-ease:${c.motion.ease}; --pv-dur:${c.motion.pv};`;
   const bars=[54,72,40,88,63,78].map(h=>`<div class="bar" style="height:${h}%"></div>`).join('');
   const isDash = c.product.id==='dashboard' || c.product.id==='saas-app';
   const html = `<div class="ui animate" style="${vars}">
@@ -741,7 +756,7 @@ function tokensObject(){
            line:p.line, success:p.success, warning:p.warning, danger:p.danger, accentSoft:p.accentSoft, onPrimary:p.onPrimary},
     typography:{heading:c.font.head, body:c.font.body, baseSize:'16px', lineHeight:1.5},
     radius:c.style.radius+'px', spacing:c.scale.map(n=>n+'px'), appearance:p.dark?'dark':'light',
-    motion:{easing:'cubic-bezier(.22,1,.36,1)', fast:'180ms', base:'320ms', slow:'620ms'}
+    motion:{style:c.motionName, easing:c.motion.ease, fast:c.motion.fast, base:c.motion.base, slow:c.motion.slow}
   };
 }
 function download(name, text){
@@ -895,6 +910,7 @@ function initOptions(){
   $('#f-industry').innerHTML = INDUSTRIES.map(i=>`<option value="${i.id}">${i.emoji}  ${i.name}</option>`).join('');
   $('#f-product').innerHTML  = PRODUCTS.map(p=>`<option value="${p.id}">${p.name}</option>`).join('');
   $('#f-platform').innerHTML = PLATFORMS.map(p=>`<option value="${p.id}">${p.name}</option>`).join('');
+  $('#f-motion').innerHTML = Object.keys(MOTIONS).map((m,i)=>`<option value="${m}"${i===0?' selected':''}>${m}</option>`).join('');
   $('#f-moods').innerHTML = Object.keys(MOODS).map(m=>`<button data-m="${m}">${m}</button>`).join('');
   document.querySelectorAll('#f-moods button').forEach(b=>b.addEventListener('click',()=>toggleMood(b)));
   syncDefaultMoods();

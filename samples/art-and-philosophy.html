@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Almost Touching — Art &amp; Philosophy · The Interval</title>
-<meta name="description" content="On the small, charged distance where art and philosophy do their work — an essay beside Michelangelo's Creation of Adam. A KALEIDO motion sample.">
+<meta name="description" content="A landscape essay beside Michelangelo's Creation of Adam — on the small, charged distance where art and philosophy do their work. A KALEIDO motion sample.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Spectral:ital,wght@0,400;0,500;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -12,7 +12,8 @@
   :root{
     --paper:#f2ead6; --paper2:#ece0c8; --raised:#f7f1e2;
     --ink:#2b2116; --dim:#4f4130; --muted:#847057; --line:rgba(43,33,22,.16);
-    --sienna:#a9532c; --sienna-deep:#8a3f1f; --ochre:#c0892f; --glow:rgba(230,178,96,.9);
+    --sienna:#a9532c; --sienna-deep:#8a3f1f; --ochre:#c0892f;
+    --e:cubic-bezier(.22,1,.36,1);
     --disp:'Fraunces', Georgia, 'Times New Roman', serif;
     --body:'Spectral', Georgia, serif;
     --mono:'Space Mono', ui-monospace, monospace;
@@ -20,15 +21,14 @@
   *{box-sizing:border-box; margin:0; padding:0}
   html{scroll-behavior:smooth}
   body{background:var(--paper); color:var(--ink); font-family:var(--body);
-    -webkit-font-smoothing:antialiased; overflow-x:hidden; line-height:1.74;
+    -webkit-font-smoothing:antialiased; overflow-x:hidden; line-height:1.72;
     background-image:radial-gradient(120vw 80vh at 50% -12%, rgba(169,83,44,.07), transparent 60%),
                      radial-gradient(100vw 70vh at 50% 120%, rgba(120,88,48,.09), transparent 62%);}
-  /* rustic plaster grain */
   .grain{position:fixed; inset:0; z-index:0; pointer-events:none; opacity:.05; mix-blend-mode:multiply;
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
   ::selection{background:rgba(192,137,47,.32)}
   a{color:inherit}
-  .col{max-width:648px; margin:0 auto; padding:0 24px; position:relative; z-index:1}
+  .band{max-width:1220px; margin:0 auto; padding:0 40px; position:relative; z-index:1}
   .mono{font-family:var(--mono); text-transform:uppercase; letter-spacing:.2em; font-size:11px; color:var(--muted)}
 
   #bar{position:fixed; top:0; left:0; height:3px; width:0; z-index:50;
@@ -39,103 +39,116 @@
   header.mast .tag{margin-top:7px; font-family:var(--mono); font-size:10px; letter-spacing:.24em; color:var(--muted); text-transform:uppercase}
   .divider{width:44px; height:1px; background:var(--line); margin:18px auto 0}
 
-  .hero{text-align:center; padding:40px 0 26px; position:relative; z-index:1}
+  /* landscape hero: title left, standfirst right */
+  .hero{max-width:1220px; margin:0 auto; padding:44px 40px 28px; position:relative; z-index:1;
+    display:grid; grid-template-columns:1.15fr .85fr; gap:56px; align-items:end}
   .kicker{color:var(--sienna); font-family:var(--mono); font-size:11px; letter-spacing:.3em; text-transform:uppercase}
-  .hero h1{font-family:var(--disp); font-weight:500; font-size:clamp(50px,9.5vw,108px); line-height:.98;
-    letter-spacing:-.015em; margin:18px 0 22px; text-wrap:balance; font-optical-sizing:auto}
+  .hero h1{font-family:var(--disp); font-weight:500; font-size:clamp(48px,7.4vw,104px); line-height:.96;
+    letter-spacing:-.015em; margin-top:16px; text-wrap:balance; font-optical-sizing:auto}
   .hero h1 em{font-style:italic; color:var(--sienna)}
-  .standfirst{font-family:var(--disp); font-style:italic; font-weight:400; font-size:clamp(19px,2.5vw,25px);
-    line-height:1.5; color:var(--dim); max-width:32ch; margin:0 auto}
-  .byline{margin-top:20px}
+  .standfirst{font-family:var(--disp); font-style:italic; font-weight:400; font-size:clamp(19px,2.1vw,26px);
+    line-height:1.48; color:var(--dim)}
+  .byline{margin-top:16px}
 
-  /* feature painting */
-  .feature{max-width:1180px; margin:14px auto 6px; padding:0 20px; position:relative; z-index:1}
-  .frame{position:relative; overflow:hidden; border-radius:3px; box-shadow:0 30px 70px -34px rgba(43,33,22,.55), 0 2px 0 rgba(255,255,255,.4) inset;
+  .feature{max-width:1300px; margin:16px auto 6px; padding:0 40px; position:relative; z-index:1}
+  .frame{position:relative; overflow:hidden; border-radius:3px; box-shadow:0 34px 80px -38px rgba(43,33,22,.6), 0 2px 0 rgba(255,255,255,.4) inset;
     border:1px solid rgba(43,33,22,.14)}
-  .frame img{display:block; width:100%; height:auto; will-change:transform;
-    animation:kenburns 26s ease-in-out infinite alternate}
-  .frame::after{content:""; position:absolute; inset:0; pointer-events:none;
-    box-shadow:inset 0 0 120px rgba(43,25,12,.28); mix-blend-mode:multiply}
+  .frame img{display:block; width:100%; height:auto; will-change:transform; animation:kenburns 26s ease-in-out infinite alternate}
+  .frame::after{content:""; position:absolute; inset:0; pointer-events:none; box-shadow:inset 0 0 120px rgba(43,25,12,.26); mix-blend-mode:multiply}
   .spark{position:absolute; left:37%; top:45%; width:15%; aspect-ratio:1; transform:translate(-50%,-50%);
     background:radial-gradient(circle, rgba(255,244,214,.95), rgba(226,168,84,.55) 34%, transparent 70%);
     mix-blend-mode:screen; filter:blur(3px); pointer-events:none; opacity:0}
   body.lit .spark{animation:sparkPulse 3.8s ease-in-out 1.2s infinite}
   .feature figcaption{margin-top:12px; text-align:center}
-
   @keyframes kenburns{from{transform:scale(1.005)} to{transform:scale(1.06) translateX(-1.2%)}}
   @keyframes sparkPulse{0%,100%{opacity:.42; transform:translate(-50%,-50%) scale(.88)} 50%{opacity:.92; transform:translate(-50%,-50%) scale(1.14)}}
 
-  .scrollcue{display:flex; flex-direction:column; align-items:center; gap:9px; margin:22px 0 36px; color:var(--muted); position:relative; z-index:1}
+  .scrollcue{display:flex; flex-direction:column; align-items:center; gap:9px; margin:22px 0 40px; color:var(--muted); position:relative; z-index:1}
   .scrollcue .ln{width:1px; height:40px; background:linear-gradient(var(--muted),transparent); animation:drop 2.4s ease-in-out infinite}
   @keyframes drop{0%,100%{opacity:.3; transform:scaleY(.7)} 50%{opacity:1; transform:scaleY(1)}}
 
-  article{padding:6px 0 34px}
-  .lede{font-size:20px; line-height:1.72}
-  .lede::first-letter{font-family:var(--disp); font-weight:600; float:left; font-size:86px; line-height:.7;
-    padding:9px 14px 0 0; color:var(--sienna)}
-  p{margin:0 0 26px}
-  p.big{font-size:19px}
-  .sec{margin-top:52px}
-  .sec .eyebrow{color:var(--sienna); margin-bottom:14px; display:block}
-  .sec h2{font-family:var(--disp); font-weight:500; font-size:clamp(30px,5vw,44px); line-height:1.06;
-    letter-spacing:-.01em; margin-bottom:18px; text-wrap:balance}
+  /* horizontal essay spread */
+  .essay{max-width:1220px; margin:0 auto; padding:0 40px 30px; position:relative; z-index:1}
+  .intro{display:grid; grid-template-columns:1.08fr 1fr; gap:60px; align-items:start}
+  .duo, .finale{display:grid; grid-template-columns:1fr 1fr; gap:64px; margin-top:60px}
+  .lede{font-size:21px; line-height:1.66}
+  .lede::first-letter{font-family:var(--disp); font-weight:600; float:left; font-size:90px; line-height:.68;
+    padding:10px 14px 0 0; color:var(--sienna)}
+  .intro p{margin:0}
+  p.big{font-size:18px}
+  .sec .eyebrow, .coda .eyebrow{color:var(--sienna); margin-bottom:14px; display:block}
+  .sec h2, .coda h2{font-family:var(--disp); font-weight:500; font-size:clamp(28px,3vw,40px); line-height:1.06;
+    letter-spacing:-.01em; margin-bottom:16px; text-wrap:balance}
 
-  .pull{margin:64px auto; max-width:900px; padding:0 24px; text-align:center; position:relative; z-index:1}
-  .pull .mark{font-family:var(--disp); font-size:76px; line-height:0; color:var(--ochre); display:block; height:38px}
-  .pull blockquote{font-family:var(--disp); font-weight:500; font-style:italic; font-size:clamp(28px,4.7vw,44px);
-    line-height:1.24; letter-spacing:-.01em; text-wrap:balance}
+  .pull{margin:66px auto; max-width:1000px; padding:0 24px; text-align:center; position:relative; z-index:1}
+  .pull .mark{font-family:var(--disp); font-size:78px; line-height:0; color:var(--ochre); display:block; height:38px}
+  .pull blockquote{font-family:var(--disp); font-weight:500; font-style:italic; font-size:clamp(28px,4.4vw,46px);
+    line-height:1.22; letter-spacing:-.01em; text-wrap:balance}
 
-  .rule{width:100%; max-width:648px; margin:56px auto; height:1px; background:var(--line)}
-  .coda p{font-size:19px}
-
-  footer{border-top:1px solid var(--line); margin-top:60px; padding:34px 0 60px; text-align:center; position:relative; z-index:1}
-  footer .note{color:var(--muted); font-size:13px; line-height:1.7; max-width:58ch; margin:0 auto 14px; font-family:var(--body)}
+  footer{border-top:1px solid var(--line); margin-top:56px; padding:34px 0 64px; text-align:center; position:relative; z-index:1}
+  footer .note{color:var(--muted); font-size:13px; line-height:1.7; max-width:60ch; margin:0 auto 14px; font-family:var(--body)}
   footer em{color:var(--dim)}
   footer .back{font-family:var(--mono); font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--sienna); text-decoration:none; border-bottom:1px solid rgba(169,83,44,.35)}
+  footer .reset{background:none; border:0; cursor:pointer; color:var(--muted); font-family:var(--mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase; margin-left:18px}
 
   /* motion */
   .rise{opacity:0; transform:translateY(24px)}
-  body.lit .rise{opacity:1; transform:none; transition:opacity 1s cubic-bezier(.22,1,.36,1), transform 1s cubic-bezier(.22,1,.36,1)}
-  body.lit .hero .kicker{transition-delay:.05s} body.lit .hero h1{transition-delay:.18s}
-  body.lit .hero .standfirst{transition-delay:.32s} body.lit .hero .byline{transition-delay:.44s}
-  body.lit .feature{transition-delay:.52s} body.lit .scrollcue{transition-delay:.8s}
-  .reveal{opacity:0; transform:translateY(28px); transition:opacity .9s cubic-bezier(.22,1,.36,1), transform .9s cubic-bezier(.22,1,.36,1)}
-  .reveal.in{opacity:1; transform:none}
+  body.lit .rise{opacity:1; transform:none; transition:opacity 1s var(--e), transform 1s var(--e)}
+  body.lit .hero .kicker{transition-delay:.05s} body.lit .hero h1{transition-delay:.16s}
+  body.lit .standfirst{transition-delay:.3s} body.lit .byline{transition-delay:.42s}
+  body.lit .feature{transition-delay:.5s} body.lit .scrollcue{transition-delay:.78s}
+  .reveal{opacity:0; transform:translateY(34px)}
+  .reveal-l{opacity:0; transform:translateX(-46px)}
+  .reveal-r{opacity:0; transform:translateX(46px)}
+  .reveal,.reveal-l,.reveal-r{transition:opacity 1s var(--e), transform 1s var(--e)}
+  .reveal.in,.reveal-l.in,.reveal-r.in{opacity:1; transform:none}
 
-  /* desktop editorial layout: section labels hang in the left margin, text keeps a readable measure */
-  @media (min-width:1040px){
-    article.col{max-width:830px}
-    article.col > p{margin-left:190px; max-width:640px}
-    .sec, .coda{display:grid; grid-template-columns:150px 640px; column-gap:40px; margin-top:66px; align-items:start}
-    .sec > .eyebrow, .coda > .eyebrow{grid-column:1; grid-row:1; text-align:right; margin:9px 0 0}
-    .sec > h2{grid-column:2; grid-row:1}
-    .sec > .big{grid-column:2; grid-row:2}
-    .coda > p{grid-column:2; grid-row:1}
-    .rule{margin-left:190px; margin-right:0; max-width:640px}
-    .lede{font-size:21px}
+  /* inline editor */
+  .editbtn{position:fixed; right:22px; bottom:22px; z-index:60; cursor:pointer; font-family:var(--mono);
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:#fff; background:var(--sienna);
+    border:0; border-radius:999px; padding:13px 20px; box-shadow:0 12px 30px -12px rgba(138,63,31,.7); transition:transform .2s var(--e), background .2s}
+  .editbtn:hover{transform:translateY(-2px)}
+  .editbtn.on{background:var(--sienna-deep)}
+  .edithint{position:fixed; right:22px; bottom:70px; z-index:60; font-family:var(--mono); font-size:10px; letter-spacing:.1em;
+    text-transform:uppercase; color:var(--muted); background:var(--raised); border:1px solid var(--line); border-radius:8px;
+    padding:8px 12px; opacity:0; transform:translateY(6px); transition:opacity .3s, transform .3s; pointer-events:none}
+  body.editing .edithint{opacity:1; transform:none}
+  body.editing [data-edit]{outline:1px dashed rgba(169,83,44,.5); outline-offset:5px; border-radius:2px; cursor:text}
+  body.editing [data-edit]:hover{background:rgba(192,137,47,.07)}
+  body.editing [data-edit]:focus{outline:2px solid var(--sienna); background:rgba(192,137,47,.11)}
+
+  @media (max-width:900px){
+    .hero{grid-template-columns:1fr; gap:18px; text-align:center; padding-top:26px}
+    .intro,.duo,.finale{grid-template-columns:1fr; gap:34px}
+    .lede::first-letter{font-size:72px}
   }
   @media (prefers-reduced-motion:reduce){
     *{animation:none !important; transition:none !important}
-    .rise,.reveal{opacity:1 !important; transform:none !important} .spark{opacity:.6 !important}
+    .rise,.reveal,.reveal-l,.reveal-r{opacity:1 !important; transform:none !important} .spark{opacity:.6 !important}
   }
-  @media (max-width:600px){ .hero{padding-top:22px} .lede::first-letter{font-size:70px} }
 </style>
 </head>
 <body>
 <div class="grain"></div>
 <div id="bar"></div>
+<button id="editBtn" class="editbtn">✎ Edit page</button>
+<div class="edithint">Click any text to edit · saved to this browser</div>
 
 <header class="mast">
-  <div class="name">THE&nbsp;INTERVAL</div>
-  <div class="tag">Essays on art, mind &amp; the space between</div>
+  <div class="name" data-edit>THE&nbsp;INTERVAL</div>
+  <div class="tag" data-edit>Essays on art, mind &amp; the space between</div>
   <div class="divider"></div>
 </header>
 
-<section class="hero col">
-  <span class="kicker rise">Art &amp; Philosophy</span>
-  <h1 class="rise">Almost <em>Touching</em></h1>
-  <p class="standfirst rise">On the small, charged distance where art and philosophy do their quiet, lifelong work.</p>
-  <div class="byline rise mono">An essay · beside Michelangelo</div>
+<section class="hero">
+  <div class="hero-l">
+    <span class="kicker rise" data-edit>Art &amp; Philosophy</span>
+    <h1 class="rise" data-edit>Almost <em>Touching</em></h1>
+  </div>
+  <div class="hero-r">
+    <p class="standfirst rise" data-edit>On the small, charged distance where art and philosophy do their quiet, lifelong work.</p>
+    <div class="byline rise mono" data-edit>An essay · beside Michelangelo</div>
+  </div>
 </section>
 
 <figure class="feature rise">
@@ -143,7 +156,7 @@
     <img src="assets/creation-of-adam.jpg" alt="Michelangelo's fresco The Creation of Adam: God reaches from the right toward Adam on the left, their index fingers almost meeting." loading="eager" width="1707" height="775">
     <span class="spark" aria-hidden="true"></span>
   </div>
-  <figcaption class="mono">Michelangelo · The Creation of Adam · Sistine Chapel, c.&nbsp;1512 · public domain</figcaption>
+  <figcaption class="mono" data-edit>Michelangelo · The Creation of Adam · Sistine Chapel, c.&nbsp;1512 · public domain</figcaption>
 </figure>
 
 <div class="scrollcue rise">
@@ -151,75 +164,100 @@
   <span class="ln"></span>
 </div>
 
-<article class="col">
-  <p class="lede">For five centuries the most famous gesture in Western art has been left deliberately unfinished. Michelangelo painted two hands reaching across a sliver of bare plaster — and then did not close the gap. God strains toward Adam; Adam barely lifts his arm; and between their fingers there remains a distance you could cover with a coin. The whole force of the picture lives in that distance. It is the reason we are still looking.</p>
-
-  <p>We tend to assume meaning arrives at the moment things connect — when the answer lands, the lesson takes, the hands finally touch. The ceiling proposes something stranger: that the charge is in the approach, not the contact. Art and philosophy are the two arms of that reach. One comes at the world through the senses, the other through the argument, and each spends its life extending toward a meaning it never quite grips.</p>
-
-  <div class="sec reveal">
-    <span class="eyebrow mono">The first hand — art</span>
-    <h2>Art reaches through the eye.</h2>
-    <p class="big">A painting does not tell you what to think; it rearranges what you notice. Stand in front of the right image and your attention is quietly re-plumbed — the ordinary made strange enough to see again. That is not decoration. It is a technology for widening the aperture of a life, for making a person feel the weight of things they had stopped weighing.</p>
+<div class="essay">
+  <div class="intro">
+    <p class="lede reveal" data-edit>For five centuries the most famous gesture in Western art has been left deliberately unfinished. Michelangelo painted two hands reaching across a sliver of bare plaster — and then did not close the gap. God strains toward Adam; Adam barely lifts his arm; and between their fingers there remains a distance you could cover with a coin. The whole force of the picture lives in that distance. It is the reason we are still looking.</p>
+    <p class="reveal" data-edit>We tend to assume meaning arrives at the moment things connect — when the answer lands, the lesson takes, the hands finally touch. The ceiling proposes something stranger: that the charge is in the approach, not the contact. Art and philosophy are the two arms of that reach. One comes at the world through the senses, the other through the argument, and each spends its life extending toward a meaning it never quite grips.</p>
   </div>
 
-  <div class="sec reveal">
-    <span class="eyebrow mono">The second hand — philosophy</span>
-    <h2>Philosophy reaches through the question.</h2>
-    <p class="big">Where art enlarges perception, philosophy interrogates it. It asks what you actually mean by the words you live by — freedom, good, self, enough — and refuses the comfortable answer. It is uncomfortable on purpose. Its gift is not certainty but a better quality of doubt: the kind that keeps you honest, and keeps the reach alive.</p>
+  <div class="duo">
+    <section class="sec reveal-l">
+      <span class="eyebrow mono" data-edit>The first hand — art</span>
+      <h2 data-edit>Art reaches through the eye.</h2>
+      <p class="big" data-edit>A painting does not tell you what to think; it rearranges what you notice. Stand in front of the right image and your attention is quietly re-plumbed — the ordinary made strange enough to see again. That is not decoration. It is a technology for widening the aperture of a life, for making a person feel the weight of things they had stopped weighing.</p>
+    </section>
+    <section class="sec reveal-r">
+      <span class="eyebrow mono" data-edit>The second hand — philosophy</span>
+      <h2 data-edit>Philosophy reaches through the question.</h2>
+      <p class="big" data-edit>Where art enlarges perception, philosophy interrogates it. It asks what you actually mean by the words you live by — freedom, good, self, enough — and refuses the comfortable answer. It is uncomfortable on purpose. Its gift is not certainty but a better quality of doubt: the kind that keeps you honest, and keeps the reach alive.</p>
+    </section>
   </div>
-</article>
 
-<div class="pull reveal">
-  <span class="mark">&ldquo;</span>
-  <blockquote>Meaning is not held in either hand. It is the current that leaps the gap.</blockquote>
+  <div class="pull reveal">
+    <span class="mark">&ldquo;</span>
+    <blockquote data-edit>Meaning is not held in either hand. It is the current that leaps the gap.</blockquote>
+  </div>
+
+  <div class="finale">
+    <section class="sec reveal-l">
+      <span class="eyebrow mono" data-edit>What it does to a life</span>
+      <h2 data-edit>None of this is abstract.</h2>
+      <p class="big" data-edit>A poem read at the right hour has talked people back from despair. A single idea — that you are not your thoughts; that suffering is not an argument against living — has reorganised whole biographies. Art and philosophy change what a person can perceive and what they can bear, and those two changes are most of what we mean when we say a life is going well.</p>
+    </section>
+    <section class="coda reveal-r">
+      <span class="eyebrow mono" data-edit>Coda</span>
+      <h2 data-edit>The un-closed gap.</h2>
+      <p class="big" data-edit>So we live where Michelangelo left us: mid-reach, fingers out, the touch forever a coin's width away. It can feel like failure. It is not. That gap is the space in which everything human happens — the wanting, the making, the asking. Art shows us the gap is beautiful. Philosophy insists it is worth crossing.</p>
+    </section>
+  </div>
 </div>
 
-<article class="col">
-  <div class="sec reveal">
-    <span class="eyebrow mono">What it does to a life</span>
-    <h2>None of this is abstract.</h2>
-    <p class="big">A poem read at the right hour has talked people back from despair. A single idea — that you are not your thoughts; that suffering is not an argument against living — has reorganised whole biographies. Art and philosophy change what a person can perceive and what they can bear, and those two changes are most of what we mean when we say a life is going well.</p>
-  </div>
-
-  <div class="rule"></div>
-
-  <div class="coda reveal">
-    <span class="eyebrow mono">Coda</span>
-    <p>So we live where Michelangelo left us: mid-reach, fingers out, the touch forever a coin's width away. It can feel like failure. It is not. That un-closed gap is the space in which everything human happens — the wanting, the making, the asking. To keep reaching across it, knowingly, is the whole of the work. Art shows us the gap is beautiful. Philosophy insists it is worth crossing.</p>
-  </div>
-</article>
-
 <footer>
-  <div class="col">
+  <div class="band">
     <p class="note"><em>The Creation of Adam</em> by Michelangelo (Sistine Chapel ceiling, c.&nbsp;1508–1512) is in the public domain; image via Wikimedia Commons. The essay is original to this page.</p>
     <p class="note">A sample built with the <strong>KALEIDO</strong> motion system — fluid transitions, zero dependencies.</p>
     <a class="back" href="../index.html">← Back to KALEIDO</a>
+    <button class="reset" id="resetBtn" title="Discard your edits">reset edits</button>
   </div>
 </footer>
 
 <script>
   requestAnimationFrame(function(){ document.body.classList.add('lit'); });
 
+  /* reading progress */
   var bar = document.getElementById('bar');
-  function onScroll(){
-    var h = document.documentElement, max = h.scrollHeight - h.clientHeight;
-    bar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + '%';
-  }
+  function onScroll(){ var h=document.documentElement, max=h.scrollHeight-h.clientHeight;
+    bar.style.width=(max>0?(h.scrollTop/max)*100:0)+'%'; }
   addEventListener('scroll', onScroll, {passive:true}); onScroll();
 
-  var io = new IntersectionObserver(function(entries){
-    entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
-  }, {threshold:.16, rootMargin:'0px 0px -8% 0px'});
-  document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  /* scroll reveals (vertical + left/right for the landscape columns) */
+  var io = new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, {threshold:.15, rootMargin:'0px 0px -8% 0px'});
+  document.querySelectorAll('.reveal,.reveal-l,.reveal-r').forEach(function(el){ io.observe(el); });
 
-  // gentle parallax on the painting
+  /* gentle parallax on the painting */
   var frame = document.querySelector('.frame');
   if(!matchMedia('(prefers-reduced-motion: reduce)').matches){
-    addEventListener('scroll', function(){
-      var y = Math.min(scrollY, 700);
-      frame.style.transform = 'translateY(' + (y * 0.05) + 'px)';
-    }, {passive:true});
+    addEventListener('scroll', function(){ var y=Math.min(scrollY,700); frame.style.transform='translateY('+(y*0.05)+'px)'; }, {passive:true});
   }
+
+  /* ---- inline editing: click any element, edits persist to this browser ---- */
+  var KEY='kaleido-essay-v1';
+  var editables = Array.prototype.slice.call(document.querySelectorAll('[data-edit]'));
+  editables.forEach(function(el,i){ el.setAttribute('data-k', i); });
+  // restore saved edits
+  try{
+    var saved = JSON.parse(localStorage.getItem(KEY) || '{}');
+    editables.forEach(function(el,i){ if(saved[i] != null) el.innerHTML = saved[i]; });
+  }catch(e){}
+  function persist(){
+    var out = {}; editables.forEach(function(el,i){ out[i] = el.innerHTML; });
+    try{ localStorage.setItem(KEY, JSON.stringify(out)); }catch(e){}
+  }
+  var editing = false, btn = document.getElementById('editBtn');
+  btn.addEventListener('click', function(){
+    editing = !editing;
+    document.body.classList.toggle('editing', editing);
+    editables.forEach(function(el){ el.contentEditable = editing ? 'true' : 'false'; });
+    btn.textContent = editing ? '✓ Done' : '✎ Edit page';
+    btn.classList.toggle('on', editing);
+    if(!editing) persist();
+  });
+  editables.forEach(function(el){ el.addEventListener('input', persist); el.addEventListener('blur', persist); });
+  document.getElementById('resetBtn').addEventListener('click', function(){
+    try{ localStorage.removeItem(KEY); }catch(e){}; location.reload();
+  });
 </script>
 </body>
 </html>
